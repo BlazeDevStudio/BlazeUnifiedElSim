@@ -62,12 +62,18 @@ jobs:
           /usr/bin/python3 tools/check_kicad_pcb_contract.py samples/LED_Placed_Routed.kicad_pcb
       - name: Run real KiCad 9 PCB DRC and capture all violation categories
         run: |
+          # Resolve the exact bundled physical footprint library in the same
+          # relative structure as the Android KiCad ZIP (KIPRJMOD).
+          mkdir -p build/kicad-interop/pcb/project
+          cp samples/LED_Placed_Routed.kicad_pcb build/kicad-interop/pcb/project/Board.kicad_pcb
+          cp app/src/main/assets/kicad/fp-lib-table build/kicad-interop/pcb/project/fp-lib-table
+          cp -r app/src/main/assets/kicad/BlazeBasic.pretty build/kicad-interop/pcb/project/
+          test -s build/kicad-interop/pcb/project/BlazeBasic.pretty/LED_D3.kicad_mod
           # KiCad exit 5 means DRC findings; do not suppress tool errors.
-          # The sample is known development geometry and MUST NOT be passed off
-          # as fabrication-ready, even if one run reports zero rule violations.
+          # Even a zero-findings run is NEVER fabrication approval.
           set +e
           kicad-cli pcb drc --format json --severity-all --exit-code-violations \
-            --output build/kicad-interop/pcb/native-drc.json samples/LED_Placed_Routed.kicad_pcb
+            --output build/kicad-interop/pcb/native-drc.json build/kicad-interop/pcb/project/Board.kicad_pcb
           drc_exit=$?
           set -e
           python3 tools/verify_kicad_drc.py build/kicad-interop/pcb/native-drc.json \
