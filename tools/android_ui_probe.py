@@ -37,11 +37,19 @@ def main():
     parser.add_argument("--evidence", type=pathlib.Path)
     args = parser.parse_args()
 
-    raw, current = nodes()
-    if args.evidence:
-        args.evidence.parent.mkdir(parents=True, exist_ok=True)
-        args.evidence.write_bytes(raw)
-    matches = [node for node in current if args.text in node.attrib.get("text", "")]
+    # The emulator can deliver input events after an earlier accessibility snapshot.
+    # Retry fresh snapshots rather than treating one stale UI dump as an app failure.
+    attempts = 5 if args.action == "assert" else 1
+    for attempt in range(attempts):
+        raw, current = nodes()
+        if args.evidence:
+            args.evidence.parent.mkdir(parents=True, exist_ok=True)
+            args.evidence.write_bytes(raw)
+        matches = [node for node in current if args.text in node.attrib.get("text", "")]
+        if matches:
+            break
+        if attempt + 1 < attempts:
+            time.sleep(2)
     if not matches:
         available = [node.attrib.get("text", "") for node in current if node.attrib.get("text", "")]
         print(f"UI {args.action} FAILED: {args.text!r}; visible text: {available[:35]!r}", file=sys.stderr)
