@@ -24,7 +24,7 @@ data class FootprintTemplate(
 )
 
 object FootprintCatalog {
-    val available = listOf(
+    private val originalAvailable = listOf(
         FootprintTemplate("BlazeBasic:R_0402", "Resistor 0402 reference package", setOf(PartType.R), mapOf("1" to MmPoint(-0.5,0.0), "2" to MmPoint(0.5,0.0)), mapOf("1" to 0,"2" to 1)),
         FootprintTemplate("BlazeBasic:R_0603", "Resistor 0603 reference package", setOf(PartType.R), mapOf("1" to MmPoint(-0.75,0.0), "2" to MmPoint(0.75,0.0)), mapOf("1" to 0,"2" to 1)),
         FootprintTemplate("BlazeBasic:R_0805", "Resistor 0805 reference package", setOf(PartType.R), mapOf("1" to MmPoint(-0.95,0.0), "2" to MmPoint(0.95,0.0)), mapOf("1" to 0,"2" to 1)),
@@ -61,6 +61,9 @@ object FootprintCatalog {
             // The alpha LED is anode on the left, cathode on the right.
             mapOf("1" to MmPoint(1.27,0.0), "2" to MmPoint(-1.27,0.0)), mapOf("1" to 1,"2" to 0))
     )
+    @Volatile private var bundledAvailable: List<FootprintTemplate>? = null
+    val available: List<FootprintTemplate> get() = bundledAvailable ?: originalAvailable
+    internal fun install(items: List<FootprintTemplate>) { bundledAvailable = items.toList() }
     fun forPart(p: Part):List<FootprintTemplate> = available.filter{p.type in it.supported}
     fun byId(id:String):FootprintTemplate? = available.find{it.libraryId==id}
 }
