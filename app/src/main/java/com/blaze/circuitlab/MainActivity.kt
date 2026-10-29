@@ -155,7 +155,7 @@ class MainActivity:Activity() {
         root.addView(scrollStrip(
             btn("Save JSON"){exportJson()},btn("Import JSON"){importJson()},
             btn("Export KiCad"){exportKiCad()},btn("SPICE .cir"){exportSpice()},btn("KiCad ZIP + Library"){exportKiCadPackage()},
-            btn("MCU Pin CSV"){exportMcuPinCsv()},btn("Project info"){showProjectInfo()}))
+            btn("MCU Pin CSV"){exportMcuPinCsv()},btn("BOM CSV"){exportBom()},btn("Project info"){showProjectInfo()}))
         editor.onCircuitChanged={edited()}
         editor.onSelectionChanged={updateDisplay()}
         editor.onUndoSnapshot={c->snapshot(c)}
@@ -283,6 +283,11 @@ class MainActivity:Activity() {
             }
         }
         b.show()
+    }
+    private fun exportBom(){
+        val data=runCatching{Bom.export(editor.project)}.getOrElse{return show("BOM: ${it.message}")}
+        exportBinary=data.toByteArray(Charsets.UTF_8)
+        chooseSave("text/csv","${safeName()}-bom.csv",107)
     }
     private fun exportMcuPinCsv(){
         val data=runCatching{McuLibrary.csv(editor.project)}.getOrElse{return show("MCU pin export: ${it.message}")}
@@ -541,7 +546,7 @@ class MainActivity:Activity() {
                 }
                 val parsed=ProjectJson.decode(json)
                 install(parsed);show("Circuit imported")
-            } else if(requestCode==104||requestCode==105){
+            } else if(requestCode==104||requestCode==105||requestCode==107){
                 val payload=exportBinary?:return
                 contentResolver.openOutputStream(uri,"wt")!!.use{stream->stream.write(payload);stream.flush()}
                 show("Exported ${payload.size} bytes through Android file picker")
