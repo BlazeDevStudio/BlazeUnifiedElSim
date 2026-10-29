@@ -24,8 +24,8 @@ jobs:
       - name: Parse original exported schematics with actual KiCad
         run: |
           mkdir -p build/kicad-interop
-          for stem in LED_Current_Limiter RC_Charging Powered_Opamp_Rail_Limiter; do
-            schematic="samples/${stem}.kicad_sch"
+          for schematic in samples/*.kicad_sch; do
+            stem="$(basename "$schematic" .kicad_sch)"
             echo "Testing $schematic"
             test -s "$schematic"
             kicad-cli sch export netlist --format kicadxml -o "build/kicad-interop/${stem}.xml" "$schematic"
