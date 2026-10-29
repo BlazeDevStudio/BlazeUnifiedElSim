@@ -453,6 +453,9 @@ fun main() {
         java.util.zip.ZipInputStream(bytes.inputStream()).use{zip->while(true){val e=zip.nextEntry?:break;entries[e.name]=zip.readBytes()}}
         check(entries.size>=17)
         check(entries.keys.any{it.endsWith(".kicad_sch")})
+        val boardEntry=entries.entries.single{it.key.endsWith(".kicad_pcb")}
+        check(KiCad.balanced(boardEntry.value.decodeToString()))
+        check(boardEntry.value.decodeToString().contains("(net 0 \"\")"))
         check(entries["BlazeBasic.pretty/LED_D3.kicad_mod"]!!.decodeToString().contains("(pad \"2\""))
         check(entries["fp-lib-table"]!!.decodeToString().contains("KIPRJMOD"))
         check(entries["BlazeCircuitLab.kicad_sym"]!!.decodeToString().contains("kicad_symbol_lib"))
@@ -982,11 +985,11 @@ fun main() {
     }
     test("BOM reflects actual schematic-to-PCB placement and external footprint status") {
         val c=DemoCircuits.led()
-        val resistor=c.parts.single{it.ref=="R1"}
-        BoardPlanner.assign(c,resistor.uuid,"BlazeBasic:R_0805")
+        val r=c.parts.single{it.ref=="R1"}
+        BoardPlanner.assign(c,r.uuid,"BlazeBasic:R_0805")
         var report=Bom.export(c)
         check(report.contains("BUNDLED_REFERENCE_UNVERIFIED"))
-        BoardPlanner.assign(c,resistor.uuid,"Resistor_SMD:R_0805_2012Metric")
+        BoardPlanner.assign(c,r.uuid,"Resistor_SMD:R_0805_2012Metric")
         report=Bom.export(c)
         check(report.contains("EXTERNAL_REFERENCE_NOT_BUNDLED"))
     }
@@ -994,6 +997,55 @@ fun main() {
         val c=DemoCircuits.led()
         c.parts.first{it.type==PartType.R}.footprint="nonexistent"
         check(runCatching{Bom.export(c)}.isFailure)
+    }
+    test("KiCad board exports real placed footprint pads and an unrouted board") {
+        val c=DemoCircuits.led()
+        BoardPlanner.assign(c,c.parts.single{it.ref=="R1"}.uuid,"BlazeBasic:R_0805")
+        BoardPlanner.assign(c,c.parts.single{it.ref=="D1"}.uuid,"BlazeBasic:LED_D3")
+        val lib=java.io.File("app/src/main/assets/kicad/BlazeBasic.pretty").listFiles()!!.associate { "BlazeBasic.pretty/${it.name}" to it.readBytes() }
+        val b=KiCadBoard.export(c,lib)
+        check(b.mappedPads==4 && b.routedSegments==0)
+        check("(kicad_pcb" in b.pcb && "(gr_rect" in b.pcb)
+        check("(net 0 \"\")" in b.pcb)
+        check(b.pcb.contains("(footprint \"BlazeBasic:R_0805\""))
+        check(b.pcb.contains("(footprint \"BlazeBasic:LED_D3\""))
+        check(b.pcb.contains("(property \"Reference\" \"R1\""))
+        check(b.pcb.contains("(property \"Reference\" \"D1\""))
+        check(b.warnings.any{"unrouted" in it})
+        check(KiCad.balanced(b.pcb))
+        check(b==KiCadBoard.export(c,lib))
+    }
+    test("KiCad board refuses unavailable/external physical footprint files") {
+        val c=DemoCircuits.led()
+        val resistor=c.parts.single{it.ref=="R1"}
+        BoardPlanner.assign(c,resistor.uuid,"Resistor_SMD:R_0805_2012Metric")
+        check(runCatching{KiCadBoard.export(c,emptyMap())}.isFailure)
+        BoardPlanner.assign(c,resistor.uuid,"BlazeBasic:R_0805")
+        check(runCatching{KiCadBoard.export(c,emptyMap())}.isFailure)
+        val file="BlazeBasic.pretty/R_0805.kicad_mod"
+        val raw=java.io.File("app/src/main/assets/kicad/$file").readText()
+        check(runCatching{KiCadBoard.export(c,mapOf(file to raw.replace("(pad \"2\"","(pad \"3\"").toByteArray()))}.isFailure)
+    }
+    test("KiCad PCB requires physical pad placements, not simulation sources") {
+        val c=DemoCircuits.led()
+        check(runCatching{KiCadBoard.export(c,emptyMap())}.isFailure)
+        val voltage=c.parts.single{it.type==PartType.V}
+        check(runCatching{BoardPlanner.assign(c,voltage.uuid,"BlazeBasic:R_0805")}.isFailure)
+    }
+    test("KiCad PCB exports only actual copper, with distinct schematic nets") {
+        val c=DemoCircuits.led()
+        val r=c.parts.single{it.ref=="R1"};val led=c.parts.single{it.ref=="D1"}
+        BoardPlanner.assign(c,r.uuid,"BlazeBasic:R_0805")
+        BoardPlanner.assign(c,led.uuid,"BlazeBasic:LED_D3")
+        val rp=BoardPlanner.pads(c).single{it.ref=="R1" && it.pad=="2"}
+        val dp=BoardPlanner.pads(c).single{it.ref=="D1" && it.pad=="2"}
+        check(rp.net==dp.net)
+        BoardRouting.add(c,PadKey(r.uuid,"2"),PadKey(led.uuid,"2"))
+        val lib=java.io.File("app/src/main/assets/kicad/BlazeBasic.pretty").listFiles()!!.associate { "BlazeBasic.pretty/${it.name}" to it.readBytes() }
+        val b=KiCadBoard.export(c,lib)
+        check(b.routedSegments>=1)
+        check(b.pcb.contains("(segment "))
+        check(b.warnings.any{"provisional" in it})
     }
     println("SUMMARY: $checks/$checks passed")
 }
