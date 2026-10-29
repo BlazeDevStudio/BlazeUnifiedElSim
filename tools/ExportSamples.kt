@@ -24,6 +24,10 @@ fun main(){
     for(file in src.listFiles()!!.filter{it.isFile})lib[file.name]=file.readBytes()
     for(file in File(src,"BlazeBasic.pretty").listFiles()!!)lib["BlazeBasic.pretty/${file.name}"]=file.readBytes()
     File(dir,"LED_With_Libraries.zip").writeBytes(KiCadPackage.pack(c,lib))
+    // This example has one manually routed connection. Others remain ratsnest-only.
+    BoardRouting.add(c,PadKey(c.parts.single{it.ref=="R1"}.uuid,"2"),PadKey(c.parts.single{it.ref=="D1"}.uuid,"2"))
+    File(dir,"LED_Placed_Routed.kicad_pcb").writeText(KiCadBoard.export(c,lib).pcb)
+    File(dir,"LED_Placed_Routed_With_Libraries.zip").writeBytes(KiCadPackage.pack(c,lib))
     val npn=DemoCircuits.npnSwitch()
     BoardPlanner.assign(npn,npn.parts.single{it.ref=="Q1"}.uuid,"BlazeBasic:Q_TO92_EBC_2.54")
     File(dir,"NPN_With_Libraries.zip").writeBytes(KiCadPackage.pack(npn,lib))
