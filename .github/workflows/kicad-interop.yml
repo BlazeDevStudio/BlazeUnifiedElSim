@@ -9,6 +9,8 @@ on:
       - 'app/src/main/java/com/blaze/circuitlab/core/KiCad.kt'
       - 'app/src/main/java/com/blaze/circuitlab/core/KiCadBoard.kt'
       - 'tools/check_kicad_pcb_contract.py'
+      - 'tools/verify_kicad_drc.py'
+      - 'tests/test_kicad_drc.py'
 permissions:
   contents: read
 jobs:
@@ -58,6 +60,19 @@ jobs:
           kicad-cli pcb export svg --mode-single --layers F.Cu,Edge.Cuts --output build/kicad-interop/pcb/board.svg samples/LED_Placed_Routed.kicad_pcb
           test "$(find build/kicad-interop/pcb -type f -name '*.svg' | wc -l)" -ge 1
           /usr/bin/python3 tools/check_kicad_pcb_contract.py samples/LED_Placed_Routed.kicad_pcb
+      - name: Run real KiCad 9 PCB DRC and capture all violation categories
+        run: |
+          # KiCad exit 5 means DRC findings; do not suppress tool errors.
+          # The sample is known development geometry and MUST NOT be passed off
+          # as fabrication-ready, even if one run reports zero rule violations.
+          set +e
+          kicad-cli pcb drc --format json --severity-all --exit-code-violations \
+            --output build/kicad-interop/pcb/native-drc.json samples/LED_Placed_Routed.kicad_pcb
+          drc_exit=$?
+          set -e
+          python3 tools/verify_kicad_drc.py build/kicad-interop/pcb/native-drc.json \
+            --cli-exit "$drc_exit" --summary build/kicad-interop/pcb/native-drc-summary.json
+          echo "Actual KiCad DRC report retained; production PCB/fabrication status: NO_GO"
       - name: Retain validation evidence
         if: always()
         uses: actions/upload-artifact@v4
