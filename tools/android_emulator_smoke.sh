@@ -45,7 +45,7 @@ adb logcat -c || true
 # First cold launch. Verify that a real electrical operating point is displayed.
 launch
 python3 tools/android_ui_probe.py assert 'MNA ·' --evidence "$OUT/initial-readout.xml"
-python3 tools/android_ui_probe.py assert 'Offline Catalog v2' --evidence "$OUT/offline-catalog.xml"
+python3 tools/android_ui_probe.py assert 'BLAZE CIRCUITLAB' --evidence "$OUT/offline-catalog.xml"
 # This is an Android asset-backed library screen, not a mock list.
 python3 tools/android_ui_probe.py tap 'Libraries'
 python3 tools/android_ui_probe.py assert 'Offline Electronics' --evidence "$OUT/library-picker.xml"
