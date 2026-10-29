@@ -1,4 +1,5 @@
 package android.content
+import android.content.res.AssetManager
 import java.io.File
 import android.net.Uri
 class Resources {val displayMetrics=DisplayMetrics()}
@@ -18,4 +19,3 @@ open class Intent(val action:String){
     companion object {const val ACTION_CREATE_DOCUMENT="";const val ACTION_OPEN_DOCUMENT="";const val CATEGORY_OPENABLE="";const val EXTRA_TITLE=""}
 }
 
-class AssetManager { fun open(path:String):java.io.InputStream=java.io.ByteArrayInputStream(ByteArray(0));fun list(path:String):Array<String>?=emptyArray() }
