@@ -40,6 +40,7 @@ jobs:
               assert components is not None and len(components) >= 1, f'No actual KiCad components: {p}'
               print('KiCad opened/exported',p.name,'components',len(components))
           PY
+          python3 tools/check_kicad_net_contract.py build/kicad-interop
       - name: Retain validation evidence
         if: always()
         uses: actions/upload-artifact@v4
