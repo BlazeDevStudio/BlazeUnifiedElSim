@@ -1,0 +1,52 @@
+name: KiCad 9 native schematic interoperability
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/kicad-interop.yml'
+      - 'samples/*.kicad_sch'
+      - 'app/src/main/java/com/blaze/circuitlab/core/KiCad.kt'
+permissions:
+  contents: read
+jobs:
+  kicad-schematic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install stable KiCad 9 CLI
+        run: |
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -q
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends kicad
+          kicad-cli version | tee kicad-version.txt
+          grep -E '^9\.' kicad-version.txt
+      - name: Parse original exported schematics with actual KiCad
+        run: |
+          mkdir -p build/kicad-interop
+          for stem in LED_Current_Limiter RC_Charging Powered_Opamp_Rail_Limiter; do
+            schematic="samples/${stem}.kicad_sch"
+            echo "Testing $schematic"
+            test -s "$schematic"
+            kicad-cli sch export netlist -f kicadxml -o "build/kicad-interop/${stem}.xml" "$schematic"
+            test -s "build/kicad-interop/${stem}.xml"
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          for p in sorted(Path('build/kicad-interop').glob('*.xml')):
+              root=ET.parse(p).getroot()
+              components=root.find('./components')
+              assert components is not None and len(components) >= 1, f'No actual KiCad components: {p}'
+              print('KiCad opened/exported',p.name,'components',len(components))
+          PY
+      - name: Retain validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BlazeCircuitLab-KiCad9-validation
+          path: |
+            build/kicad-interop/**
+            kicad-version.txt
+          if-no-files-found: warn
+          retention-days: 10
