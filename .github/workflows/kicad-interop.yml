@@ -41,6 +41,13 @@ jobs:
               print('KiCad opened/exported',p.name,'components',len(components))
           PY
           python3 tools/check_kicad_net_contract.py build/kicad-interop
+      - name: Validate bundled KiCad footprint files through KiCad CLI
+        run: |
+          mkdir -p build/kicad-interop/footprints
+          kicad-cli fp export svg --layers F.Cu --output build/kicad-interop/footprints app/src/main/assets/kicad/BlazeBasic.pretty
+          count="$(find build/kicad-interop/footprints -name '*.svg' | wc -l)"
+          echo "Native footprint SVG exports: $count"
+          test "$count" -ge 18
       - name: Retain validation evidence
         if: always()
         uses: actions/upload-artifact@v4
