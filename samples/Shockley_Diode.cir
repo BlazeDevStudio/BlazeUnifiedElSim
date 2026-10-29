@@ -1,0 +1,9 @@
+* Blaze CircuitLab experimental SPICE export
+* Diode Forward Bias — Shockley Model
+D_D1 N2 0 BCL_MODEL_D1
+R1 N1 N2 1000
+V1 N1 0 5
+.temp 25
+.model BCL_MODEL_D1 D(Is=0.000000000001 N=1.75)
+.tran 0.001 0.1
+.end

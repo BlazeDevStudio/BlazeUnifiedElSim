@@ -1,0 +1,52 @@
+# Blaze CircuitLab v0.2.9 — Native Android powered-amplifier integration
+
+This archive continues the original **v0.2.8 native Android** source. It is not an HTML edition or an APK. The offline HTML alpha is retained byte-for-byte under `legacy/`. This source package contains one v0.2.9 project tree.
+
+## Source features implemented
+
+- Five-terminal **OPAMP**: IN+, IN-, OUT, V+, V- with a bounded nonlinear rail-clamped ideal-output source. Model equation: `Vout = clamp(gain × (Vin+ − Vin−), V− + headroom, V+ − headroom)`.
+- Model convergence and invalid-rail checks, with the authoritative project electrical graph preserved across solver, schematic, and export.
+- Four searchable powered-amplifier presets; native schematic placement and editable gain/headroom; powered example circuit.
+- KiCad native-format candidate OPAMP symbol with five terminal numbers; no invented physical footprint. SPICE export rejects powered OPAMP, because there is no verified equivalent macro-model.
+- Project schema v9 stores `opampHeadroomV` and accepts v1–v8 imports; older projects default to 0.2 V headroom only if they contain the newly introduced type (which older projects cannot legitimately contain).
+- Original numerical solver models, 23 footprint references, bundled footprint assets, four MCU pin-planning boards, PCB placement and experimental routing preserved.
+
+## Verified measurements for included model
+
+With ±5 V rails, headroom 0.2 V, gain 20, 0 V on IN−, 0.5 V on IN+, and a 1 kΩ output resistor, the model computes **+4.8 V** and **4.8 mA** through the resistor. With −0.5 V input, output computes −4.8 V. With 0.1 V input, output is +2.0 V; reducing the positive supply to +1 V clips output to +0.8 V. The finite-gain unity follower test computes `20/21 × 0.5 = 0.476190... V`.
+
+These are **algorithm-level reference results** and do not constitute physical IC validation.
+
+## Verification performed
+
+- Kotlin core JVM tests: **122/122 pass**, including all v0.2.8 regressions and 10 new powered-amplifier tests.
+- Native Kotlin source compiles with temporary Android API stubs: **pass**, not an SDK build.
+- Offline component catalog: **97 presets** and 4 MCU pinout references.
+- Library assets include OPAMP symbol, generated example schematic, and standalone example KiCad ZIP: integrity checks pass; native KiCad application opening/ERC **NOT performed**.
+- Original offline HTML alpha: **SHA-256 identical** to supplied original.
+- Local environment: **no Gradle or Android SDK; dl.google.com DNS unreachable**. No APK produced. `ngspice` and `kicad-cli` absent.
+
+## Build instructions (external development host/CI)
+
+Requires JDK 17, Android SDK Platform 35, Android Build Tools 35.0.0 and Gradle 8.9. Build project:
+
+```sh
+gradle --no-daemon :app:testDebugUnitTest :app:assembleDebug
+```
+
+Debug APK is expected at `app/build/outputs/apk/debug/app-debug.apk` only after the actual command succeeds; APK execution and Android device tests remain unverified. GitHub Actions `.github/workflows/android-debug.yml` is a workflow candidate, not successful-run evidence.
+
+For JVM-only testing with `kotlinc` installed:
+
+```sh
+bash tools/run-jvm-smoke.sh
+bash tools/check-native-syntax-with-stubs.sh
+```
+
+To regenerate bundled assets after modifying the Kotlin code, compile `tools/ExportCatalogAssets.kt`, `tools/ExportLibraryAssets.kt`, `tools/ExportSamples.kt` alongside `core/*.kt`, then execute each tool's `Kt` main class.
+
+## Important modeling limitations
+
+This is a **behavioral, ideal-output amplifier**. The power pins determine voltage clipping but **do not consume modeled supply current**. There is no output resistance, current limit, protection, finite bandwidth, slew rate, noise, offsets, input bias, common-mode restrictions, thermal effects, or manufacturer part behavior. Do not use to assert electrical safety or choose an actual op-amp footprint. All existing PCB DRC and KiCad export limitations still apply. **Arduino and ESP boards remain pin-planning references, not firmware emulators.**
+
+No Codex was used.

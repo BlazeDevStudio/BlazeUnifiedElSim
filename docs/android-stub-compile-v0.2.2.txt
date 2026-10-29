@@ -1,0 +1,1 @@
+PASS Kotlin-source compile against temporary API stubs (NOT Android SDK or APK compilation)

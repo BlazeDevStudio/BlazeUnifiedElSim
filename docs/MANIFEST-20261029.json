@@ -1,0 +1,691 @@
+{
+  "project": "BlazeUnifiedElSim",
+  "snapshot": "v0.2.9",
+  "files": [
+    {
+      "path": ".github/workflows/android-debug.yml",
+      "size": 1303,
+      "sha256": "c059c1914c9d5fe9e805940220979c9efde4d061e6617acc3ae5baeee4c65928"
+    },
+    {
+      "path": "README.md",
+      "size": 1641,
+      "sha256": "759d083d4cdde4e35049126fa759206066d235ac1fc4241b97e340e10bd1461f"
+    },
+    {
+      "path": "app/build.gradle.kts",
+      "size": 654,
+      "sha256": "e90bbf445821c2c9bc9c0116d78bb8937c94e9e40045f80704828b0ddf56018e"
+    },
+    {
+      "path": "app/src/main/AndroidManifest.xml",
+      "size": 731,
+      "sha256": "7acab049e4de9ba50160f1769cd38615b7727f60bd4213132a9419df71890187"
+    },
+    {
+      "path": "app/src/main/assets/catalog/electronics.json",
+      "size": 32335,
+      "sha256": "47514c205502c15428f7fb7d35a5f203e320624661dc473fa075f4d325045835"
+    },
+    {
+      "path": "app/src/main/assets/catalog/footprints.json",
+      "size": 4333,
+      "sha256": "a6c292d0d17b3483f551b11e2d7115e1b00079ed5e9a1857e9d36fd941993e43"
+    },
+    {
+      "path": "app/src/main/assets/catalog/mcu_pinouts.json",
+      "size": 10615,
+      "sha256": "a96432aa56582b3b5ffb2470bd01f27f7adcd89209a778a44230dc132162169a"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/C_0402.kicad_mod",
+      "size": 730,
+      "sha256": "df4af5980af57161131f6e3fc7342d2a3b91403028b6291d97fd261d993a2876"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/C_0603.kicad_mod",
+      "size": 724,
+      "sha256": "560bd448738eae580ebf3490e3bed85a6da9e155086cfd68836fd0e63a5349fd"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/C_0805.kicad_mod",
+      "size": 732,
+      "sha256": "7ee147ef6891e9705299646baad09ae67ab3042ee52a63ef916e18c3c54c528b"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/C_1206.kicad_mod",
+      "size": 732,
+      "sha256": "a398018c8666271530e87a8d06b9aae3ea964a3f8801fa5f4d04acb158b57d9e"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/C_Disc_5.00.kicad_mod",
+      "size": 702,
+      "sha256": "acba8468e5e016d132664fd82e62bc02eae39d596c7ae43844147a9d261a0134"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/D_DO35_7.62.kicad_mod",
+      "size": 864,
+      "sha256": "1d1a51c7177ee39c961cc5f1ea03c610ae33a1d15a669848a2c9e5c8ca1caf4b"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/LED_0805.kicad_mod",
+      "size": 743,
+      "sha256": "1705a9c102b4530b3b3afa32c354a4306306ad663a35a340ed6d4f149d361079"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/LED_D3.kicad_mod",
+      "size": 718,
+      "sha256": "7c61e5964c70e9713bfc56583fb14eda0816420b33329cd74bc1b4238d3639c2"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/LED_D5.kicad_mod",
+      "size": 718,
+      "sha256": "4530ea2079746b4c3429d4f8f67c4f60977a502a5be71dec9c23d3a04833c720"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/L_Axial_7.62.kicad_mod",
+      "size": 744,
+      "sha256": "10f0a667bde481b69d09d059ee55edb2378d42017cc0ae70f7c64d8d0b2f885f"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/M_TO92_GDS_2.54.kicad_mod",
+      "size": 927,
+      "sha256": "c4a6ab7a830f2ca3b30a55d98dc5eb4f6ffc08488b6b0dada0f5550d46c081d0"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/Q_TO92_EBC_2.54.kicad_mod",
+      "size": 885,
+      "sha256": "1427773dffbe51f22f9faea97d24426ab0eaefd92606744536a17cd6c775afe1"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/R_0402.kicad_mod",
+      "size": 729,
+      "sha256": "35b861dabde8255986214e80ee999e1ce32e14a5a6f62ed1fc9d4132cf01fa68"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/R_0603.kicad_mod",
+      "size": 723,
+      "sha256": "326dae9b79ea29f5bbacafbadc827c1330432370279d96491530c1cb0cdf02f8"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/R_0805.kicad_mod",
+      "size": 731,
+      "sha256": "d1214f08a2f013604a81416b599711822e308b4de3f20f02c59947ec154ec25f"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/R_1206.kicad_mod",
+      "size": 731,
+      "sha256": "169a572ad11adb77d9fa74a02eafc6a8e17ff06e74431ee8193476a04b865429"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/R_Axial_7.62.kicad_mod",
+      "size": 709,
+      "sha256": "f0c29de5c962b5fde6d39f56d25ae82de293c9dbe396ead865b289a7f12a9b7e"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeBasic.pretty/SW_SPST_2Pad.kicad_mod",
+      "size": 738,
+      "sha256": "aab953252686d51f94180d0e54c50805fce983d5c5c8e8d7fb340abb3ab4fd53"
+    },
+    {
+      "path": "app/src/main/assets/kicad/BlazeCircuitLab.kicad_sym",
+      "size": 12183,
+      "sha256": "ab175700a5e07b95c409a640c6e51e966682e3951ba83b652abba8477f27dfc7"
+    },
+    {
+      "path": "app/src/main/assets/kicad/README.txt",
+      "size": 591,
+      "sha256": "2e13f2b3466565be28c2607ec2e2dd887e614689a736a95d2db2f47754e62ee0"
+    },
+    {
+      "path": "app/src/main/assets/kicad/fp-lib-table",
+      "size": 161,
+      "sha256": "a538396595e3969f73c4c48634fcf50a509b3b49448c690a885894436d4dd9c5"
+    },
+    {
+      "path": "app/src/main/assets/kicad/sym-lib-table",
+      "size": 176,
+      "sha256": "0613f085a36433d148d5aeb72db183e33f5dda948e3c4b11066218bb9afada9a"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/MainActivity.kt",
+      "size": 36943,
+      "sha256": "2e189f62ff2f29e4f623c96051ae01076ad308b694665a4af7d180a92e3cc15b"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/NativeBoardView.kt",
+      "size": 7160,
+      "sha256": "3dea0edd44217fc758e56df447747dbc7ea3752e0d5374b278e62833ab83ee7f"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/NativeCircuitView.kt",
+      "size": 16483,
+      "sha256": "5e64ebbfb1fd924377a5d63e3b22cc9e253da65c9af44d75579f2ad72120af40"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/ProjectJson.kt",
+      "size": 6516,
+      "sha256": "90ce9c11d0bbc101b835a76acccc50fa4f468f6816aa247042f256e78e788b5e"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/core/Board.kt",
+      "size": 11051,
+      "sha256": "c2cc7b7eec24c896391578d16e1874f7523835b49e10500a7d69aba916956745"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/core/BoardRouting.kt",
+      "size": 8128,
+      "sha256": "a6cf69dfb1e5202cdee8c4d2b23a38773935a7a5d51967418ade6623217ed1af"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/core/Circuit.kt",
+      "size": 14410,
+      "sha256": "0e5721c514af2b177776cb048fa4f1e187ba384ca12cf92f83ceb4e4d7feb192"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/core/ComponentLibrary.kt",
+      "size": 16518,
+      "sha256": "cb13ceb4f72a7248c81188a8bb646f2aad904136640391ae3e7680cc013c43af"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/core/Interoperability.kt",
+      "size": 2299,
+      "sha256": "99d44764202d2ee641f17cfd5c2ba0f1482d76dac50588b00d09ef6350acae6e"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/core/KiCad.kt",
+      "size": 10981,
+      "sha256": "2898caa58f8ad7f263ba843aca74e83b0a63dab0047c3fb305a0b78f6ecfa430"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/core/KiCadPackage.kt",
+      "size": 2476,
+      "sha256": "7d65dce5c7ee2aca914f57f4d7078ab0c149505fbbc9f3228e602abef87d56a5"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/core/MnaSolver.kt",
+      "size": 20322,
+      "sha256": "ed1287ef2731bb147303f005bf0ce2a5d9ee06f4c295feb364dc7ded02dc2bf3"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/core/Spice.kt",
+      "size": 6023,
+      "sha256": "e8fe35217fc6bdd8c9bd0f69a3bca545d981a25d5c95f323babba9daac82021b"
+    },
+    {
+      "path": "app/src/main/java/com/blaze/circuitlab/core/Topology.kt",
+      "size": 4368,
+      "sha256": "191c9ed6bc71b41f6e40748617d0c5c7c7010a0bc47d94b6fb5d2d5fe95cdf56"
+    },
+    {
+      "path": "app/src/test/java/com/blaze/circuitlab/CoreUnitTest.kt",
+      "size": 7827,
+      "sha256": "b9d5eb5891ce09edada7b1ace0c4c39b0be87410a8b06287021de04f1c32ecba"
+    },
+    {
+      "path": "build.gradle.kts",
+      "size": 142,
+      "sha256": "c7db40acbbb9ea38d5742b4b87af8b3c4223e763b3fa9e92eb236de36eaf9bb6"
+    },
+    {
+      "path": "docs/CHANGELOG-v0.2.1.md",
+      "size": 925,
+      "sha256": "dbfc5b821604d02e18697de2fcbef280152359552d20a7c56cfc7a99fa93561f"
+    },
+    {
+      "path": "docs/CHANGELOG-v0.2.2.md",
+      "size": 1018,
+      "sha256": "368a718fef5f35f51ef2f03a284cab65307d5b7cc6448e8afabc6fcb02b85748"
+    },
+    {
+      "path": "docs/CHANGELOG-v0.2.3.md",
+      "size": 1368,
+      "sha256": "832dfee3d469d0434c506298a32bcde7b5ceb51688449c25866e08acc7c96a09"
+    },
+    {
+      "path": "docs/CHANGELOG-v0.2.4.md",
+      "size": 708,
+      "sha256": "441e2eeee49a4dc3dbe677742f7f6567029a17bda358763632e8e6283dd00653"
+    },
+    {
+      "path": "docs/CHANGELOG-v0.2.5.md",
+      "size": 996,
+      "sha256": "f808a46bdf0ca7c9dbeed8c1965460cd6f287b7e2ddb2635fc902d1b3392d948"
+    },
+    {
+      "path": "docs/CHANGELOG-v0.2.6.md",
+      "size": 831,
+      "sha256": "a5ea132b53c9769d2e6d6839772fa9fad48251d3cdd5d69d4f9e0c551e7d48bb"
+    },
+    {
+      "path": "docs/CHANGELOG-v0.2.7.md",
+      "size": 989,
+      "sha256": "9b101491a8f4efda0b6ca6dce492ee03fc91eb74478378badb7abea50bdc8212"
+    },
+    {
+      "path": "docs/CHANGELOG-v0.2.8.md",
+      "size": 730,
+      "sha256": "3df58915ed955776f01f8573be8bf0c02346bc0ab92515715b2b0d29eca08c00"
+    },
+    {
+      "path": "docs/CHANGELOG-v0.2.9.md",
+      "size": 588,
+      "sha256": "c6dfb815d0d8a6da5fbe5a34ac0063e6a81bdf5192614d91b0ac16cdb6c91dbc"
+    },
+    {
+      "path": "docs/KOTLIN-COMPILER-WARNINGS-v0.2.7.txt",
+      "size": 748,
+      "sha256": "9c67918fb489dd0d68856d206a58091a22396822fe8975a2d57ff0f61d9e5ff8"
+    },
+    {
+      "path": "docs/LICENSING-AND-ACCURACY.md",
+      "size": 2011,
+      "sha256": "23fcc33d5ad454e107bee2cc4dffdfc4674432a83ff3a331ebeab0765f5ad162"
+    },
+    {
+      "path": "docs/MANIFEST-SHA256-v0.2.4.json",
+      "size": 10967,
+      "sha256": "a2ceaeee4638d73c1582fc766044a44f7800e318d8e4b29d488bd525dfa7b38f"
+    },
+    {
+      "path": "docs/MANIFEST-SHA256-v0.2.5.json",
+      "size": 11818,
+      "sha256": "67fc6c03b74ddb969fcdf54964176cbef0eb5d9a8c47b942319c3ccc428e614b"
+    },
+    {
+      "path": "docs/MANIFEST-SHA256-v0.2.6.json",
+      "size": 12829,
+      "sha256": "b50df5c88ab41a11c8ef4df61157a8322aa9327abce862632acb3de84a22595e"
+    },
+    {
+      "path": "docs/MANIFEST-SHA256-v0.2.8.json",
+      "size": 14427,
+      "sha256": "1b781e924fd93764d8c122c1f52414e734216463eda86f78aa745b313168593d"
+    },
+    {
+      "path": "docs/MANIFEST-SHA256-v0.2.9.json",
+      "size": 15110,
+      "sha256": "d9f08282fe23e4f2e01d8d09702c6e914150c2a8a823076435443c91b92d04f8"
+    },
+    {
+      "path": "docs/MIGRATION_SOURCE_CHECK.md",
+      "size": 744,
+      "sha256": "6c4439a42544ea1d6419f6666480b4228ac167dc86ecf79f7be9875a369e15d0"
+    },
+    {
+      "path": "docs/README-v0.2.1-HISTORICAL.md",
+      "size": 9015,
+      "sha256": "8a5580514e420ae5e54078143bb7c1b24bac331a7afac41f0f1d8894bb8a4d22"
+    },
+    {
+      "path": "docs/README-v0.2.3-HISTORICAL.md",
+      "size": 6302,
+      "sha256": "1492edd63463405225da7b43b65f33d13f4cecdee2de17deeff44826869ccc02"
+    },
+    {
+      "path": "docs/README-v0.2.4-HISTORICAL.md",
+      "size": 4053,
+      "sha256": "f77b972eee932f61845946ffac9ef6bd18e2e51a3b9c1f8c504db46b258799be"
+    },
+    {
+      "path": "docs/README-v0.2.7-HISTORICAL.md",
+      "size": 4269,
+      "sha256": "3e337d62f4dd08401a131b469b5baec59a949c9c0869bf31cb65641cdb340afb"
+    },
+    {
+      "path": "docs/SHA256-MANIFEST-v0.2.7.txt",
+      "size": 12608,
+      "sha256": "ddce8c60c470b550b58c73c07772f99472b1a69a8be190aceea5fb7552a75b0a"
+    },
+    {
+      "path": "docs/SHA256SUMS-v0.2.0-HISTORICAL.txt",
+      "size": 3309,
+      "sha256": "8b7099cf7c208fb3278628b8e53e27ac0646f3e1c8b49789fec230701f654770"
+    },
+    {
+      "path": "docs/SHA256SUMS-v0.2.1.txt",
+      "size": 4364,
+      "sha256": "fdc9c058aa3e5bd4775e9aa2c74d9e48dd831a0d36a9a2a1842b643030454a90"
+    },
+    {
+      "path": "docs/SHA256SUMS-v0.2.2.txt",
+      "size": 5308,
+      "sha256": "4a1dfcc8832406fe6d7da14d660742e1da90d914ed76b99ba0174f9f14583c62"
+    },
+    {
+      "path": "docs/SHA256SUMS-v0.2.3.txt",
+      "size": 9262,
+      "sha256": "c0c263b48c4091c9e10cedb16af9b1ce8586a33430b68b6c9133a87e9f27ed14"
+    },
+    {
+      "path": "docs/STATUS-v0.2.0-HISTORICAL.md",
+      "size": 1456,
+      "sha256": "8bef4f937afe8115e50709e0fa66cdc7e3696ea2ceaa6d6779eae6b0164da37c"
+    },
+    {
+      "path": "docs/STATUS-v0.2.1.md",
+      "size": 2386,
+      "sha256": "5f3caa76097a25ac893f7ff39caedab288c3ade20c50c367700c221b59f92276"
+    },
+    {
+      "path": "docs/STATUS-v0.2.2.md",
+      "size": 2216,
+      "sha256": "6734f49671dc7c1753a44db780f7a28a82d9c95d1434f66c86590005e4e1582b"
+    },
+    {
+      "path": "docs/STATUS-v0.2.3.md",
+      "size": 739,
+      "sha256": "c9262efda804c70be491ec46e1901585c580b73d1ef0f3ba4854dfb8b63fcc13"
+    },
+    {
+      "path": "docs/STATUS-v0.2.9.md",
+      "size": 581,
+      "sha256": "834c54d879b1b6fdde06bdd6dcc07f41864b4f08bdf9261d1f6ed5b94a870718"
+    },
+    {
+      "path": "docs/STATUS.md",
+      "size": 997,
+      "sha256": "a0805428532777ecaf50f0a1a173fbeed12341747862b2afb1de0fb5171ec41e"
+    },
+    {
+      "path": "docs/TEST-EVIDENCE-v0.2.3.txt",
+      "size": 3345,
+      "sha256": "ad04cdc22a7cecb3e7fa4782ecc5e415b025503d64eea39da65cf048f798a493"
+    },
+    {
+      "path": "docs/TEST-EVIDENCE-v0.2.4.txt",
+      "size": 4800,
+      "sha256": "249dbe40367f399b3f5df73e982cb331404fd83e4e262556238e48c4093eb6c1"
+    },
+    {
+      "path": "docs/TEST-EVIDENCE-v0.2.5.txt",
+      "size": 5648,
+      "sha256": "4211282afd27b520161c270826d36d08dcdce88771a1a065eadbe19eba4a60cb"
+    },
+    {
+      "path": "docs/TEST-EVIDENCE-v0.2.6.txt",
+      "size": 6584,
+      "sha256": "09d5824ba55d5867dcdf235a4a4a966734f088843aef4c32f32c016db5160997"
+    },
+    {
+      "path": "docs/TEST-EVIDENCE-v0.2.7.txt",
+      "size": 6651,
+      "sha256": "6bca8379ab9bc4e449f7c1f8c7c0935f852c7bf3337a9e1d057c15ea8a73bfee"
+    },
+    {
+      "path": "docs/TEST-EVIDENCE-v0.2.8.txt",
+      "size": 7203,
+      "sha256": "c7610d7dbe317451407dadc3b5527b524491487cd72668ee251487ca9744c095"
+    },
+    {
+      "path": "docs/TEST-EVIDENCE-v0.2.9.txt",
+      "size": 8790,
+      "sha256": "68376cb35065c7e159c7128f5620cda08ecaf8552fccfd4ed9b7ccb74803b2ca"
+    },
+    {
+      "path": "docs/android-stub-compile-v0.2.1.txt",
+      "size": 125,
+      "sha256": "dfa69445617944e40f1d2df890c77673f11d88ffdfe62f08b966b6078d22f0c8"
+    },
+    {
+      "path": "docs/android-stub-compile-v0.2.2.txt",
+      "size": 92,
+      "sha256": "81248d433358060c236eea5c28e8d9b13f029a03bc2945f83c5eae07534ff95c"
+    },
+    {
+      "path": "docs/handover/native-v0.2.9-README.md",
+      "size": 4068,
+      "sha256": "1e0782703dcc4b342b15835a163e7e3781d375e49c25dba82af0f9bded3fc156"
+    },
+    {
+      "path": "docs/jvm-test-evidence-v0.2.1.txt",
+      "size": 1085,
+      "sha256": "8d2ff0eaf6ccab3b78d6668060135f9b835a697835108d079f4b41a388dd9970"
+    },
+    {
+      "path": "docs/jvm-test-evidence-v0.2.2.txt",
+      "size": 1776,
+      "sha256": "04fc961905f3d979dbf95d8f2d5a7b6efcb4559169c758b16e4cce896f24d504"
+    },
+    {
+      "path": "docs/jvm-test-evidence.txt",
+      "size": 808,
+      "sha256": "8f3d4336cb0c45c6411b2d7fe67d1eafa482ff10180d40098fe61fa4746ead39"
+    },
+    {
+      "path": "docs/legacy-preservation-v0.2.1.sha256",
+      "size": 117,
+      "sha256": "036b7fe591b74da31338d7a2c6e9dd2e13df3700822e8002624b7f8ec05b5f56"
+    },
+    {
+      "path": "docs/original-sha256.txt",
+      "size": 117,
+      "sha256": "036b7fe591b74da31338d7a2c6e9dd2e13df3700822e8002624b7f8ec05b5f56"
+    },
+    {
+      "path": "docs/platform-release-gates-v0.2.2.txt",
+      "size": 92,
+      "sha256": "3ca33bf2e567647d6ac9b10383032f0dad0f26c6039d3bd3ed294547a5ec33ba"
+    },
+    {
+      "path": "gradle.properties",
+      "size": 100,
+      "sha256": "d5f372c6d46ad7c8d33f714bfae564eb5e1d73a159c495df9bc782b33e3567c2"
+    },
+    {
+      "path": "legacy/BlazeCircuitLab-0.1.0-original-offline.html",
+      "size": 41862,
+      "sha256": "8683c220f57bacb56e330aa3b0384923ef3cff60a57d88829e0dcf4469e7b34b"
+    },
+    {
+      "path": "samples/Arduino_Uno_Pin_Planning.csv",
+      "size": 137,
+      "sha256": "ce721496cd5c05c97cb38224d655bb982640b0eea7e2a27f89c6991429168638"
+    },
+    {
+      "path": "samples/Controlled_Amplifier.cir",
+      "size": 146,
+      "sha256": "98172f0b3c6de868fb57ec192dbf5d30b8b4b98324bfca3878c5d519843f2e49"
+    },
+    {
+      "path": "samples/Controlled_Amplifier.kicad_sch",
+      "size": 8692,
+      "sha256": "b7b3478372aba453aaa17186917fed6ea7d1281a84321e34a35769c33b080c06"
+    },
+    {
+      "path": "samples/DC_Current_Source.cir",
+      "size": 133,
+      "sha256": "7bdb12c5bb5b640ad61a5fe945c681e572bfc5db7299b68372dcd2949d402ad4"
+    },
+    {
+      "path": "samples/DC_Current_Source.kicad_sch",
+      "size": 6501,
+      "sha256": "16c5d354dde1c86479a7b47af6798ddd5e9097b51a622a1ec6d0d7ca141390e5"
+    },
+    {
+      "path": "samples/LED_Current_Limiter.kicad_sch",
+      "size": 7355,
+      "sha256": "57c5c9890a02a143fb4656fede8f2d25def3debae46574180929b2f065087876"
+    },
+    {
+      "path": "samples/LED_Switch.kicad_sch",
+      "size": 9023,
+      "sha256": "760431588ddcf3bedd27729da9430e7642d8831c48e983619a75ef4f063e828f"
+    },
+    {
+      "path": "samples/LED_With_Libraries.zip",
+      "size": 14125,
+      "sha256": "96a9d5c3b00db3dca5f070409763ffede58ec0b89bd5db86219a2773c2a6d740"
+    },
+    {
+      "path": "samples/NMOS_Resistive_Load.cir",
+      "size": 213,
+      "sha256": "77d960b3e0c7e4dd5c598c607dce9dc6cbc5b55a9312b3d87000f907199e50bd"
+    },
+    {
+      "path": "samples/NMOS_Resistive_Load.kicad_sch",
+      "size": 9195,
+      "sha256": "64c40a7ccb38ed729e2edf9ad0966a445f2cd94647479531e0a85fb5b1c733af"
+    },
+    {
+      "path": "samples/NMOS_With_Libraries.zip",
+      "size": 14583,
+      "sha256": "244d643785368af9ccd364e21f48536759b5baced5bc2c86e00c6fa58de1734b"
+    },
+    {
+      "path": "samples/NPN_Bias.cir",
+      "size": 233,
+      "sha256": "63367327a36a6828b72b0d04d352e2fce25f7843f675e4f13a34f53d83673616"
+    },
+    {
+      "path": "samples/NPN_Bias.kicad_sch",
+      "size": 9605,
+      "sha256": "747aaee589a53110ddd0044d46b38537a970dde46ef6a874cbde2998bd8c68f4"
+    },
+    {
+      "path": "samples/NPN_With_Libraries.zip",
+      "size": 14581,
+      "sha256": "98ac50754bbd6f4734f4790c60cdc3d53c89b6c66c73ddbbaf4f2607c26bb716"
+    },
+    {
+      "path": "samples/Powered_Amp_With_Libraries.zip",
+      "size": 15129,
+      "sha256": "d68809f6a74887ac42cd40a1f369d6bfa63cf73dae1d371502d0eab3c623df75"
+    },
+    {
+      "path": "samples/Powered_Opamp_Rail_Limiter.kicad_sch",
+      "size": 11790,
+      "sha256": "3a1c888ce776896e6bac59f515e29abf909668112e05a51bea4424c888e745d1"
+    },
+    {
+      "path": "samples/RC_Charging.kicad_sch",
+      "size": 7337,
+      "sha256": "e4c28f69f790add4a81210d7422ff72178cd14050fcc2c9627ba68b047b1dad1"
+    },
+    {
+      "path": "samples/RL_Current_Rise.cir",
+      "size": 118,
+      "sha256": "76e82c7d7235308267d3a302d65200c792d3a53596a1119190cc5cd515f5088b"
+    },
+    {
+      "path": "samples/RL_Current_Rise.kicad_sch",
+      "size": 7511,
+      "sha256": "08f26e9129400485793e79b4f13f09b60745abc2c4ad080a6788c4820989a057"
+    },
+    {
+      "path": "samples/Shockley_Diode.cir",
+      "size": 210,
+      "sha256": "1d0a5d0dab7684b8230499ebe3c53c6687982fc67fb46a05c65289a288e5299e"
+    },
+    {
+      "path": "samples/Shockley_Diode.kicad_sch",
+      "size": 7428,
+      "sha256": "b8b64e429a0c8f8c668e8539bc52b327ffc10574a108fe6de3e5b4e90ba58b4a"
+    },
+    {
+      "path": "settings.gradle.kts",
+      "size": 283,
+      "sha256": "5d1dd77fea7c5df1e8c8e46205a0766ca38e43e1809b38933a85104c5c14ccc1"
+    },
+    {
+      "path": "tests/test_import_snapshot.py",
+      "size": 2636,
+      "sha256": "83c87d969a726a79522743f15b587384ee80ba28546b2d72a666d045b1bdfe40"
+    },
+    {
+      "path": "tools/DiodeQuick.kt",
+      "size": 301,
+      "sha256": "dadbccc80c719724d49f1adf10af486dff7f8c18f6a4296fa07089d3523f5805"
+    },
+    {
+      "path": "tools/ExportCatalogAssets.kt",
+      "size": 2388,
+      "sha256": "137a8d5abdf9a2950dc696af90185613f185de8f91ef26b3c18ead2befb95dcb"
+    },
+    {
+      "path": "tools/ExportLibraryAssets.kt",
+      "size": 288,
+      "sha256": "10383e8cfbb65320da3a68f4adacc9e0675b461b55efcf5cd8eac65b9479888f"
+    },
+    {
+      "path": "tools/ExportSamples.kt",
+      "size": 2557,
+      "sha256": "d1a939fecfe9d73dcee2f665a6dba745cf0f26352c98ca18ebd63670447c3f97"
+    },
+    {
+      "path": "tools/JvmSmoke.kt",
+      "size": 54644,
+      "sha256": "6588b196817edc38d58d69c2247c78935a1012c66badeb6fce6cdf943a1972bd"
+    },
+    {
+      "path": "tools/LED_Current_Limiter.kicad_sch",
+      "size": 7355,
+      "sha256": "54ccae4c91b973a75725c0babbebb1e2fff46d157f3e34c000f5a9e97350725e"
+    },
+    {
+      "path": "tools/android-api-stubs/app.kt",
+      "size": 1044,
+      "sha256": "adef1eaeddf7080e1c1f0c168422abc960bdb40b2acde0cbbccd70b8a2624cf0"
+    },
+    {
+      "path": "tools/android-api-stubs/context.kt",
+      "size": 944,
+      "sha256": "21b09d471f11e6795eaa4c9c3d527f27cfdc91058ef649c7c49c46532300196f"
+    },
+    {
+      "path": "tools/android-api-stubs/graphics.kt",
+      "size": 974,
+      "sha256": "b9c17c1c1c51c90fd482ef079a6721f36c68f3506b01bb268dc080dd27d1666b"
+    },
+    {
+      "path": "tools/android-api-stubs/json.kt",
+      "size": 817,
+      "sha256": "f4c32aaf28401372119be9b738073fe40472ac39b8266235b0d40e6e0ad570a1"
+    },
+    {
+      "path": "tools/android-api-stubs/net.kt",
+      "size": 30,
+      "sha256": "2b035f1dff6363de20303a6e18db73f699c5e661496ddc1959b0000d345238d0"
+    },
+    {
+      "path": "tools/android-api-stubs/os.kt",
+      "size": 218,
+      "sha256": "0fe2c4aeb7bba16789f5dbc27c3da8be9df718391e437922ffab0e2238f25a19"
+    },
+    {
+      "path": "tools/android-api-stubs/text.kt",
+      "size": 171,
+      "sha256": "0903b8d8070c6d619158c55ed6f0b7b6ffcfc0f57c512c346174579beedbe945"
+    },
+    {
+      "path": "tools/android-api-stubs/util.kt",
+      "size": 239,
+      "sha256": "bafdea45ef78025b5fcdc835237b1cb39f5783b379c3a6b09bf4c38f4742d9f5"
+    },
+    {
+      "path": "tools/android-api-stubs/view.kt",
+      "size": 1354,
+      "sha256": "471dd99a0a8ab7d4480c63267692617fffaa8910d28a5d0d40c74d6a8ace2e6a"
+    },
+    {
+      "path": "tools/android-api-stubs/widget.kt",
+      "size": 893,
+      "sha256": "119a3020068213e1cabeb92cdc1e885fe2b475439cd4cb18dd3ae7711cae5185"
+    },
+    {
+      "path": "tools/check-native-syntax-with-stubs.sh",
+      "size": 397,
+      "sha256": "43a409a3cd17dfd9c91f7b911c46dca550e90050600ebebc2332f404441c6690"
+    },
+    {
+      "path": "tools/import_snapshot.py",
+      "size": 4199,
+      "sha256": "de57796cd21e34bd219b3768734c2468f470ca8dd7978c46f9e978a300ce255b"
+    },
+    {
+      "path": "tools/run-jvm-smoke.sh",
+      "size": 266,
+      "sha256": "65f78df6935b71a49067bffb9b0ff7065bd98328765947a754543d28d600152d"
+    }
+  ]
+}

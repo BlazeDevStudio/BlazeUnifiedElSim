@@ -1,0 +1,12 @@
+app/src/main/java/com/blaze/circuitlab/core/KiCad.kt:41:13: warning: 'when' is exhaustive so 'else' is redundant here
+            else->error("Unsupported")
+            ^
+app/src/main/java/com/blaze/circuitlab/core/KiCad.kt:51:13: warning: 'when' is exhaustive so 'else' is redundant here
+            else->error("Unsupported")
+            ^
+tools/JvmSmoke.kt:371:55: warning: variable 'l' is never used
+        val v=c.parts.single{it.type==PartType.V};val l=c.parts.single{it.type==PartType.L}
+                                                      ^
+tools/JvmSmoke.kt:634:50: warning: variable 'rc' is never used
+        val rb=c.parts.single{it.ref=="RB1"};val rc=c.parts.single{it.ref=="RC1"}
+                                                 ^

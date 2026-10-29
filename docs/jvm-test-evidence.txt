@@ -1,0 +1,19 @@
+PASS original LED demo and DC current
+PASS original switch closed and opened
+PASS original RC demo transient
+PASS crossing wires without junction not connected
+PASS unmarked T intersection is rejected
+PASS end-to-end segment connection
+PASS duplicate refs validation
+PASS no GND -> diagnostic
+PASS open disconnected circuit -> floating diagnostic
+PASS KiCad serializer generated syntax
+PASS KiCad unsupported component fails explicitly
+PASS KiCad deterministic output
+PASS LED branch current matches original HTML alpha
+PASS Switch branch current matches original HTML alpha
+PASS RC first timestep matches original HTML alpha
+PASS PCB data mapping uses authoritative net graph
+PASS PCB mapping rejects invented voltage-source footprint
+PASS PCB mapping rejects missing terminal mapping
+SUMMARY: 18/18 passed

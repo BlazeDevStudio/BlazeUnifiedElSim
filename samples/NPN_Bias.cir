@@ -1,0 +1,11 @@
+* Blaze CircuitLab experimental SPICE export
+* NPN Common Emitter Bias
+Q_Q1 N2 N1 0 BCL_NPN_Q1
+RB1 N4 N1 10000
+RC1 N5 N2 1000
+V1 N5 0 5
+V2 N4 0 0.8
+.temp 25
+.model BCL_NPN_Q1 NPN(Is=0.00000000000001 Bf=100 Br=2)
+.tran 0.001 0.1
+.end

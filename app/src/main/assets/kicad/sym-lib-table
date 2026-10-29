@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "BlazeCircuitLab")(type "KiCad")(uri "${KIPRJMOD}/BlazeCircuitLab.kicad_sym")(options "")(descr "Blaze CircuitLab original educational symbols"))
+)
