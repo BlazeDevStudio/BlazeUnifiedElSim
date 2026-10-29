@@ -47,8 +47,14 @@ launch
 python3 tools/android_ui_probe.py assert 'MNA ·' --evidence "$OUT/initial-readout.xml"
 python3 tools/android_ui_probe.py assert 'BLAZE CIRCUITLAB' --evidence "$OUT/offline-catalog.xml"
 # This is an Android asset-backed library screen, not a mock list.
-python3 tools/android_ui_probe.py tap 'Libraries'
+# Libraries live to the right of the palette: swipe its native horizontal
+# scroll strip by accessibility bounds, instead of assuming old "Libraries" label.
+python3 tools/android_ui_probe.py tap 'Parts Library' --scroll-anchor 'Select' --evidence "$OUT/library-toolbar.xml"
 python3 tools/android_ui_probe.py assert 'Offline Electronics' --evidence "$OUT/library-picker.xml"
+adb shell input keyevent KEYCODE_BACK
+# MCU board references must also be reachable through the real offline toolbar.
+python3 tools/android_ui_probe.py tap 'MCU Library' --scroll-anchor 'Parts Library' --evidence "$OUT/mcu-toolbar.xml"
+python3 tools/android_ui_probe.py assert 'Arduino / ESP MCU Pin Library' --evidence "$OUT/mcu-picker.xml"
 adb shell input keyevent KEYCODE_BACK
 # Exercise native PCB/schematic controls, not just process liveness.
 python3 tools/android_ui_probe.py tap 'PCB Placement'
