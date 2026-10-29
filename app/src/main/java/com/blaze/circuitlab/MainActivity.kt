@@ -82,7 +82,8 @@ class MainActivity:Activity() {
         val loaded=runCatching{if(jsonFile.exists())ProjectJson.decode(atomic.readFully().toString(Charsets.UTF_8)) else DemoCircuits.led()}
             .getOrElse { DemoCircuits.led().also{show("Autosave could not load; original file retained")} }
         editor.project=loaded;boardView.project=loaded;editor.selected=loaded.parts.firstOrNull{it.type==PartType.LED}?.uuid
-        updateDisplay()
+        // Show a real solved operating point immediately after opening the project.
+        simulateOnce()
     }
     private fun dp(n:Int)=(n*resources.displayMetrics.density).toInt()
     private fun btn(label:String,onClick:()->Unit):Button=Button(this).apply{
