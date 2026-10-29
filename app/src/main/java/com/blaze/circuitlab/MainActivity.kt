@@ -112,9 +112,9 @@ class MainActivity:Activity() {
             v.setPadding(0,insets.systemWindowInsetTop,0,insets.systemWindowInsetBottom)
             insets
         }
-        root.addView(label("ϟ  BLAZE CIRCUITLAB   •   NATIVE ANDROID  •   v0.3.0 • Offline Catalog v2",16f))
+        root.addView(label("ϟ  BLAZE CIRCUITLAB   •   NATIVE ANDROID  •   v0.3.1 • Native KiCad PCB",16f))
         playButton=btn("▶ Run"){running=!running;updateDisplay()}
-        root.addView(scrollStrip(playButton,btn("Libraries"){browsePartsLibrary()},
+        root.addView(scrollStrip(playButton,
             btn("Step"){running=false;simulateOnce();updateDisplay()},
             btn("Reset"){running=false;state=MnaSolver.State();time=0.0;editor.trace.clear();simulateOnce()},
             btn("Circuit"){editor.showScope=false},btn("Lab: Scope"){editor.showScope=true},
@@ -154,7 +154,7 @@ class MainActivity:Activity() {
             btn("Diode demo"){install(DemoCircuits.diode())},btn("NPN demo"){install(DemoCircuits.npnSwitch())},btn("NMOS demo"){install(DemoCircuits.nmosSwitch())},btn("Amplifier demo"){install(DemoCircuits.controlledAmplifier())},btn("Powered Amp demo"){install(DemoCircuits.poweredAmplifier())}))
         root.addView(scrollStrip(
             btn("Save JSON"){exportJson()},btn("Import JSON"){importJson()},
-            btn("Export KiCad"){exportKiCad()},btn("SPICE .cir"){exportSpice()},btn("KiCad ZIP + Library"){exportKiCadPackage()},
+            btn("Export KiCad"){exportKiCad()},btn("PCB → KiCad"){exportKiCadBoard()},btn("SPICE .cir"){exportSpice()},btn("KiCad ZIP + Library"){exportKiCadPackage()},
             btn("MCU Pin CSV"){exportMcuPinCsv()},btn("BOM CSV"){exportBom()},btn("Project info"){showProjectInfo()}))
         editor.onCircuitChanged={edited()}
         editor.onSelectionChanged={updateDisplay()}
@@ -309,6 +309,21 @@ class MainActivity:Activity() {
         }.getOrElse{return show("KiCad ZIP export rejected: ${it.message}")}
         exportBinary=bytes
         chooseSave("application/zip","${safeName()}-kicad-library.zip",105)
+    }
+    private fun exportKiCadBoard(){
+        val exported=runCatching{
+            val files=mutableMapOf<String,ByteArray>()
+            val folder="kicad/BlazeBasic.pretty"
+            for(name in assets.list(folder)?:emptyArray())if(name.endsWith(".kicad_mod")){
+                files["BlazeBasic.pretty/$name"]=assets.open("$folder/$name").use{it.readBytes()}
+            }
+            KiCadBoard.export(editor.project,files)
+        }.getOrElse{return show("PCB KiCad export rejected: ${it.message}")}
+        exportPayload=exported.pcb
+        AlertDialog.Builder(this).setTitle("KiCad PCB handoff · ${exported.mappedPads} pads")
+            .setMessage((exported.warnings+"Only placed BlazeBasic geometries are exported. No fabrication-grade DRC or manufacturing approval.").joinToString("\n"))
+            .setPositiveButton("Save .kicad_pcb"){_,_->chooseSave("application/octet-stream","${safeName()}.kicad_pcb",108)}
+            .setNegativeButton("Cancel",null).show()
     }
     private fun removeLastRoute(){
         if(!boardMode)return show("Switch to PCB workspace first")
@@ -550,7 +565,7 @@ class MainActivity:Activity() {
                 val payload=exportBinary?:return
                 contentResolver.openOutputStream(uri,"wt")!!.use{stream->stream.write(payload);stream.flush()}
                 show("Exported ${payload.size} bytes through Android file picker")
-            } else if(requestCode==101||requestCode==102||requestCode==106){
+            } else if(requestCode==101||requestCode==102||requestCode==106||requestCode==108){
                 val payload=exportPayload?:return
                 contentResolver.openOutputStream(uri,"wt")!!.use{stream->stream.write(payload.toByteArray(Charsets.UTF_8));stream.flush()}
                 show("Saved through Android file picker")
