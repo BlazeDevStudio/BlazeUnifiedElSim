@@ -973,5 +973,27 @@ fun main() {
             check(r.ok){ "${it.title}: ${r.message}" }
         }
     }
+    test("BOM exports source-only, missing physical footprints without fabricated MPNs") {
+        val c=DemoCircuits.led()
+        val csv=Bom.export(c)
+        check(csv.contains("SCHEMATIC_ONLY") && csv.contains("NO_FOOTPRINT"))
+        check(csv.lines().size>=4 && !csv.contains("manufacturer part number",ignoreCase=true))
+        check(csv.contains("\"R1\""))
+    }
+    test("BOM reflects actual schematic-to-PCB placement and external footprint status") {
+        val c=DemoCircuits.led()
+        val resistor=c.parts.single{it.ref=="R1"}
+        BoardPlanner.assign(c,resistor.uuid,"BlazeBasic:R_0805")
+        var report=Bom.export(c)
+        check(report.contains("BUNDLED_REFERENCE_UNVERIFIED"))
+        BoardPlanner.assign(c,resistor.uuid,"Resistor_SMD:R_0805_2012Metric")
+        report=Bom.export(c)
+        check(report.contains("EXTERNAL_REFERENCE_NOT_BUNDLED"))
+    }
+    test("BOM rejects erroneous or orphan physical assignments") {
+        val c=DemoCircuits.led()
+        c.parts.first{it.type==PartType.R}.footprint="nonexistent"
+        check(runCatching{Bom.export(c)}.isFailure)
+    }
     println("SUMMARY: $checks/$checks passed")
 }
