@@ -46,7 +46,11 @@ adb logcat -c || true
 launch
 python3 tools/android_ui_probe.py assert 'MNA ·' --evidence "$OUT/initial-readout.xml"
 python3 tools/android_ui_probe.py assert 'BLAZE CIRCUITLAB' --evidence "$OUT/offline-catalog.xml"
-# This is an Android asset-backed library screen, not a mock list.
+# Primary library hub is visible without horizontal scrolling.
+python3 tools/android_ui_probe.py tap 'Libraries'
+python3 tools/android_ui_probe.py assert 'Offline Libraries' --evidence "$OUT/library-hub.xml"
+adb shell input keyevent KEYCODE_BACK
+# These are Android asset-backed library screens, not mock lists.
 # Libraries live to the right of the palette: swipe its native horizontal
 # scroll strip by accessibility bounds, instead of assuming old "Libraries" label.
 python3 tools/android_ui_probe.py tap 'Parts Library' --scroll-anchor 'Select' --evidence "$OUT/library-toolbar.xml"
