@@ -21,7 +21,7 @@ jobs:
         run: |
           sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
           sudo apt-get update -q
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends kicad python3-pcbnew
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends kicad
           kicad-cli version | tee kicad-version.txt
           grep -E '^9\.' kicad-version.txt
       - name: Parse original exported schematics with actual KiCad
