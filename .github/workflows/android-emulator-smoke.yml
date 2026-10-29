@@ -5,6 +5,7 @@ on:
     paths:
       - 'app/**'
       - 'tools/android_emulator_smoke.sh'
+      - 'tools/android_ui_probe.py'
       - '.github/workflows/android-emulator-smoke.yml'
 permissions:
   contents: read
