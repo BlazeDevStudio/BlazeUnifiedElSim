@@ -2,7 +2,7 @@ import com.blaze.circuitlab.core.*
 import java.io.File
 
 /** Developer build-time export of the very same catalog backing the native Android browser.
- * Does not fetch or copy upstream libraries. Kotlin registry is the authoritative index.
+ * Does not fetch or copy upstream libraries. This tool produces the checked-in offline distribution snapshot.
  */
 fun j(s:String):String="\""+s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\\n")+"\""
 fun main(){
@@ -13,23 +13,24 @@ fun main(){
         "\"unit\":${j(e.unit)},\"kicadSymbol\":${j(e.kicadSymbol)},"+
         "\"approximateModel\":${e.approximateModel},"+
         "\"description\":${j(e.description)},"+
-        "\"footprints\":[${e.suggestedFootprints.joinToString(","){j(it)}}]}"
+        "\"footprints\":[${e.suggestedFootprints.joinToString(","){j(it)}}],\"frequency\":${e.frequency}}"
     }
-    File(dir,"electronics.json").writeText("{\"schema\":1,\"presets\":[\n$parts\n]}\n")
+    File(dir,"electronics.json").writeText("{\"schema\":2,\"presets\":[\n$parts\n]}\n")
     val boards=McuLibrary.boards.joinToString(",\n") { b ->
         val pins=b.pins.joinToString(",\n") { p ->
             "{\"name\":${j(p.name)},\"kind\":${j(p.kind)},\"functions\":[${p.functions.joinToString(","){j(it)}}],"+
-            "\"caution\":${j(p.caution)},\"voltageV\":${p.voltageV?.toString()?:"null"}}"
+            "\"caution\":${j(p.caution)},\"voltageV\":${p.voltageV?.toString()?:"null"},\"header\":${j(p.header)}}"
         }
         "{\"id\":${j(b.id)},\"title\":${j(b.title)},\"logicVoltageV\":${b.logicVoltage},"+
             "\"description\":${j(b.description)},\"reference\":${j(b.source)},\"pins\":[\n$pins\n]}"
     }
-    File(dir,"mcu_pinouts.json").writeText("{\"schema\":1,\"mode\":\"reference-and-planning-only\",\"boards\":[\n$boards\n]}\n")
+    File(dir,"mcu_pinouts.json").writeText("{\"schema\":2,\"mode\":\"reference-and-planning-only\",\"boards\":[\n$boards\n]}\n")
     val footprints=FootprintCatalog.available.joinToString(",\n") { t ->
         "{\"id\":${j(t.libraryId)},\"title\":${j(t.title)},\"supported\":[${t.supported.joinToString(","){j(it.name)}}],"+
             "\"padToTerminal\":{${t.terminals.entries.joinToString(","){j(it.key)+":"+it.value}}},"+
+            "\"padOffsetsMm\":{${t.padOffsets.entries.joinToString(","){j(it.key)+":{\"x\":"+it.value.x+",\"y\":"+it.value.y+"}"}}},"+
             "\"localKiCadFile\":${if(t.libraryId.startsWith("BlazeBasic:"))j("kicad/BlazeBasic.pretty/${t.libraryId.substringAfter(':')}.kicad_mod") else "null"}}"
     }
-    File(dir,"footprints.json").writeText("{\"schema\":1,\"footprints\":[\n$footprints\n]}\n")
+    File(dir,"footprints.json").writeText("{\"schema\":2,\"footprints\":[\n$footprints\n]}\n")
     println("Wrote ${ElectronicLibrary.presets.size} electronics presets, ${McuLibrary.boards.size} MCU boards and ${FootprintCatalog.available.size} footprint references")
 }
