@@ -28,7 +28,7 @@ jobs:
             schematic="samples/${stem}.kicad_sch"
             echo "Testing $schematic"
             test -s "$schematic"
-            kicad-cli sch export netlist -f kicadxml -o "build/kicad-interop/${stem}.xml" "$schematic"
+            kicad-cli sch export netlist --format kicadxml -o "build/kicad-interop/${stem}.xml" "$schematic"
             test -s "build/kicad-interop/${stem}.xml"
           done
           python3 - <<'PY'
