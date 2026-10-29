@@ -24,7 +24,7 @@ data class ElectronicPreset(
 
 object ElectronicLibrary {
     /** Presets represent values and physical applications, not new solver component models. */
-    val presets: List<ElectronicPreset> = buildList {
+    private val originalPresets: List<ElectronicPreset> = buildList {
         val resistors = listOf(10.0,22.0,47.0,100.0,220.0,330.0,470.0,680.0,1000.0,
             2200.0,4700.0,10000.0,22000.0,47000.0,100000.0,220000.0,470000.0,1000000.0)
         resistors.forEach { ohms ->
@@ -93,6 +93,11 @@ object ElectronicLibrary {
         add(ElectronicPreset("GND","Ground reference","Power / Ground",PartType.GND,0.0,"V",
             "power:GND","Electrical reference; not a physical footprint"))
     }
+    @Volatile private var bundledPresets: List<ElectronicPreset>? = null
+    /** Android uses the validated package assets, not the compile-time fallback. The latter
+     * permits isolated JVM solver verification before the Android runtime is initialized. */
+    val presets: List<ElectronicPreset> get() = bundledPresets ?: originalPresets
+    internal fun install(items: List<ElectronicPreset>) { bundledPresets = items.toList() }
     private fun formatInductor(v:Double):String = if(v>=1e-3)"${(v*1e3).toSimple()} mH" else "${(v*1e6).toSimple()} µH"
     private fun formatCap(v:Double):String = when {
         v>=1e-3 -> "${(v*1e3).toSimple()} mF"
@@ -136,7 +141,7 @@ object McuLibrary {
         McuPin(name,funs.toSet(),"GPIO",caution,v,header)
     private fun power(name:String,v:Double?=null)=McuPin(name,setOf("POWER"),"POWER",voltageV=v)
     private fun gnd()=McuPin("GND",setOf("GROUND"),"GROUND")
-    val boards:List<McuBoard> = listOf(
+    private val originalBoards:List<McuBoard> = listOf(
         McuBoard("arduino-uno-r3","Arduino UNO R3 / ATmega328P",5.0,
             "5 V I/O; 14 digital signals and 6 analog inputs. D0/D1 shared with serial.",
             (0..13).map{n->gp("D$n",*(listOf("DIGITAL")+
@@ -187,6 +192,9 @@ object McuLibrary {
             }+listOf(power("3V3",3.3),power("5V",5.0),gnd(),McuPin("EN",setOf("RESET","ENABLE"),"CONTROL")),
             "https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html")
     )
+    @Volatile private var bundledBoards: List<McuBoard>? = null
+    val boards: List<McuBoard> get() = bundledBoards ?: originalBoards
+    internal fun install(items: List<McuBoard>) { bundledBoards = items.toList() }
     fun board(id:String)=boards.singleOrNull{it.id==id}
     fun searchBoards(q:String)=boards.filter{"$q".isBlank()||("${it.title} ${it.description} ${it.id}").contains(q,true)}
     fun searchPins(boardId:String,q:String)=board(boardId)?.pins?.filter{q.isBlank()||it.searchable().contains(q.lowercase(Locale.ROOT))}?: emptyList()
