@@ -154,4 +154,26 @@ class CoreUnitTest {
         try {Spice.export(c);fail("Unverified powered op-amp model must reject SPICE export")}
         catch(_:IllegalArgumentException) {/* expected */}
     }
+    @Test fun nativeKiCadBoardUsesActualLibraryPadsAndSchematicNets() {
+        val c=DemoCircuits.led()
+        val resistor=c.parts.single{it.ref=="R1"};val led=c.parts.single{it.ref=="D1"}
+        BoardPlanner.assign(c,resistor.uuid,"BlazeBasic:R_0805")
+        BoardPlanner.assign(c,led.uuid,"BlazeBasic:LED_D3")
+        BoardRouting.add(c,PadKey(resistor.uuid,"2"),PadKey(led.uuid,"2"))
+        val base=java.io.File("src/main/assets/kicad/BlazeBasic.pretty").takeIf{it.isDirectory}
+            ?:java.io.File("app/src/main/assets/kicad/BlazeBasic.pretty")
+        val files=base.listFiles()!!.associate{"BlazeBasic.pretty/${it.name}" to it.readBytes()}
+        val output=KiCadBoard.export(c,files)
+        assertEquals(4,output.mappedPads)
+        assertEquals(1,output.routedSegments)
+        assertTrue(output.pcb.contains("(segment "))
+        assertTrue(output.pcb.contains("(footprint \"BlazeBasic:LED_D3\""))
+        assertTrue(KiCad.balanced(output.pcb))
+    }
+    @Test fun nativeKiCadBoardCannotInventExternalFootprintGeometry() {
+        val c=DemoCircuits.led();val r=c.parts.single{it.ref=="R1"}
+        BoardPlanner.assign(c,r.uuid,"Resistor_SMD:R_0805_2012Metric")
+        try {KiCadBoard.export(c,emptyMap());fail("External reference cannot be fabricated")}
+        catch(_:IllegalArgumentException) {/* correct */}
+    }
 }
