@@ -42,27 +42,45 @@ adb install -r "$APK"
 adb shell am force-stop "$PKG" || true
 adb logcat -c || true
 
-# First cold launch.
+# First cold launch. Verify that a real electrical operating point is displayed.
 launch
-# Verify that returning from Home does not kill the Activity.
+python3 tools/android_ui_probe.py assert 'MNA ·' --evidence "$OUT/initial-readout.xml"
+# Exercise native PCB/schematic controls, not just process liveness.
+python3 tools/android_ui_probe.py tap 'PCB Placement'
+sleep 1
+python3 tools/android_ui_probe.py assert 'PCB:' --evidence "$OUT/pcb-workspace.xml"
+python3 tools/android_ui_probe.py tap 'Schematic'
+sleep 1
+python3 tools/android_ui_probe.py assert 'D1 (LED)' --evidence "$OUT/schematic-workspace.xml"
+# The real simulator must be interactive and report computed values.
+python3 tools/android_ui_probe.py tap '▶ Run'
+sleep 2
+python3 tools/android_ui_probe.py assert 'Ⅱ Pause' --evidence "$OUT/simulation-running.xml"
+python3 tools/android_ui_probe.py tap 'Ⅱ Pause'
+python3 tools/android_ui_probe.py assert 'MNA ·' --evidence "$OUT/simulation-paused.xml"
+# Verify returning from Home does not kill the Activity.
 adb shell input keyevent KEYCODE_HOME
 sleep 1
 launch
+python3 tools/android_ui_probe.py assert 'MNA ·' --evidence "$OUT/home-return.xml"
 # Explicitly disable emulator network transport, then cold relaunch offline.
 adb shell svc wifi disable || true
 adb shell svc data disable || true
 adb shell am force-stop "$PKG"
 launch
+python3 tools/android_ui_probe.py assert 'MNA ·' --evidence "$OUT/offline-relaunch.xml"
 # Orientation changes must not terminate the application process.
 adb shell settings put system accelerometer_rotation 0
 adb shell settings put system user_rotation 1
 sleep 3
 assert_running
+python3 tools/android_ui_probe.py assert 'MNA ·' --evidence "$OUT/landscape.xml"
 adb shell settings put system user_rotation 0
 sleep 3
 assert_running
+python3 tools/android_ui_probe.py assert 'MNA ·' --evidence "$OUT/portrait.xml"
 
 # Basic screenshot check: actual screen pixels were captured.
 adb exec-out screencap -p > "$OUT/screenshot.png"
 [[ $(wc -c < "$OUT/screenshot.png") -gt 10000 ]] || { echo 'ERROR: screenshot is missing/empty' >&2; exit 1; }
-echo 'Android emulator install, launch, offline relaunch, Home return and rotation smoke: PASS'
+echo 'Android emulator native UI interaction, numerical readout, offline relaunch, Home and rotation: PASS'
