@@ -1,5 +1,6 @@
 """Distribution/catalog contract tests: real package assets, no web or mock catalog."""
 import json
+import re
 import math
 from pathlib import Path
 import unittest
@@ -123,6 +124,21 @@ class CatalogAssetTests(unittest.TestCase):
     def test_reject_duplicate_mcu_pins(self):
         src = deepcopy(self.source); src[2]['boards'][0]['pins'].append(src[2]['boards'][0]['pins'][0])
         with self.assertRaises(ValueError): validate(*src)
+
+    def test_bundled_kicad_pad_geometry_matches_offline_index(self):
+        # Exported .kicad_mod files must match the pad graph used by native PCB.
+        pattern = re.compile(r'\(pad\s+"([^"]+)"\s+[^\n]*?\(at\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s*\)')
+        verified = 0
+        for fp in self.source[1]['footprints']:
+            filename = fp['localKiCadFile']
+            if not filename:
+                continue
+            real = {m.group(1): (float(m.group(2)), float(m.group(3)))
+                    for m in pattern.finditer((ASSETS / filename).read_text('utf-8'))}
+            expected = {pad: (pt['x'], pt['y']) for pad, pt in fp['padOffsetsMm'].items()}
+            self.assertEqual(expected, real, f"KiCad pad geometry mismatch: {fp['id']}")
+            verified += 1
+        self.assertEqual(verified, 18)
 
     def test_catalog_data_contains_frequency_and_pad_coordinates(self):
         self.assertTrue(all('frequency' in e for e in self.source[0]['presets']))
