@@ -5,6 +5,9 @@ open class JSONObject {
     fun put(key:String,value:Any?):JSONObject=this
     fun getDouble(key:String)=0.0
     fun getInt(key:String)=0
+    fun getBoolean(key:String)=false
+    fun isNull(key:String)=false
+    fun keys():Iterator<String> = emptyList<String>().iterator()
     fun getString(key:String)=""
     fun getJSONObject(key:String)=JSONObject()
     fun getJSONArray(key:String)=JSONArray()
@@ -20,4 +23,5 @@ class JSONArray {
     fun put(value:Any?):JSONArray=this
     fun length():Int=0
     fun getJSONObject(index:Int)=JSONObject()
+    fun getString(index:Int)=""
 }
