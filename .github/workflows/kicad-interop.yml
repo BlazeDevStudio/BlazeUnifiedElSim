@@ -55,7 +55,7 @@ jobs:
         run: |
           test -s samples/LED_Placed_Routed.kicad_pcb
           mkdir -p build/kicad-interop/pcb
-          kicad-cli pcb export svg --layers F.Cu,Edge.Cuts --output build/kicad-interop/pcb samples/LED_Placed_Routed.kicad_pcb
+          kicad-cli pcb export svg --mode-single --layers F.Cu,Edge.Cuts --output build/kicad-interop/pcb/board.svg samples/LED_Placed_Routed.kicad_pcb
           test "$(find build/kicad-interop/pcb -type f -name '*.svg' | wc -l)" -ge 1
           /usr/bin/python3 tools/check_kicad_pcb_contract.py samples/LED_Placed_Routed.kicad_pcb
       - name: Retain validation evidence
