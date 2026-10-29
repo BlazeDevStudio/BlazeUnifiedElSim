@@ -114,7 +114,7 @@ class MainActivity:Activity() {
         }
         root.addView(label("ϟ  BLAZE CIRCUITLAB   •   NATIVE ANDROID  •   v0.3.0 • Offline Catalog v2",16f))
         playButton=btn("▶ Run"){running=!running;updateDisplay()}
-        root.addView(scrollStrip(playButton,
+        root.addView(scrollStrip(playButton,btn("Libraries"){browsePartsLibrary()},
             btn("Step"){running=false;simulateOnce();updateDisplay()},
             btn("Reset"){running=false;state=MnaSolver.State();time=0.0;editor.trace.clear();simulateOnce()},
             btn("Circuit"){editor.showScope=false},btn("Lab: Scope"){editor.showScope=true},
