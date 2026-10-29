@@ -78,11 +78,16 @@ class MainActivity:Activity() {
         super.onCreate(savedInstanceState)
         window.statusBarColor=Color.rgb(8,17,29)
         window.navigationBarColor=Color.rgb(8,17,29)
+        val libraries = runCatching { OfflineCatalogs.install(assets) }
+        if(libraries.isFailure) {
+            val message = libraries.exceptionOrNull()?.message ?: "Unknown catalog failure"
+            setContentView(label("Offline library validation failed: $message\n\nCircuit editing is disabled to protect project mappings. Reinstall a verified build.",16f))
+            return
+        }
         buildScreen()
         val loaded=runCatching{if(jsonFile.exists())ProjectJson.decode(atomic.readFully().toString(Charsets.UTF_8)) else DemoCircuits.led()}
             .getOrElse { DemoCircuits.led().also{show("Autosave could not load; original file retained")} }
         editor.project=loaded;boardView.project=loaded;editor.selected=loaded.parts.firstOrNull{it.type==PartType.LED}?.uuid
-        // Show a real solved operating point immediately after opening the project.
         simulateOnce()
     }
     private fun dp(n:Int)=(n*resources.displayMetrics.density).toInt()
@@ -107,7 +112,7 @@ class MainActivity:Activity() {
             v.setPadding(0,insets.systemWindowInsetTop,0,insets.systemWindowInsetBottom)
             insets
         }
-        root.addView(label("ϟ  BLAZE CIRCUITLAB   •   NATIVE ANDROID  •   v0.2.9 • Powered amplifier",16f))
+        root.addView(label("ϟ  BLAZE CIRCUITLAB   •   NATIVE ANDROID  •   v0.3.0 • Offline Catalog v2",16f))
         playButton=btn("▶ Run"){running=!running;updateDisplay()}
         root.addView(scrollStrip(playButton,
             btn("Step"){running=false;simulateOnce();updateDisplay()},
@@ -190,8 +195,8 @@ class MainActivity:Activity() {
     /** Searchable native, offline catalog. Entries resolve to real solver-supported types. */
     private fun browsePartsLibrary(){
         val search=EditText(this).apply{hint="Search resistor, 470, capacitor, LED, source...";setSingleLine(true)}
-        AlertDialog.Builder(this).setTitle("Electronics Library · ${ElectronicLibrary.presets.size} presets")
-            .setMessage("Presets use thirteen model-backed component types, including idealized diodes and NPN BJTs. No MCU firmware executes; manufacturing footprints require datasheet checks.")
+        AlertDialog.Builder(this).setTitle("Offline Electronics · ${ElectronicLibrary.presets.size} loaded")
+            .setMessage("Presets use fourteen model-backed component types, including idealized diodes and NPN BJTs. No MCU firmware executes; manufacturing footprints require datasheet checks.")
             .setView(search).setPositiveButton("Find"){_,_->
                 val matches=ElectronicLibrary.search(search.text.toString()).take(150)
                 if(matches.isEmpty())show("No matching supported parts") else
@@ -376,7 +381,7 @@ class MainActivity:Activity() {
             inspector.text="PCB: ${editor.project.board.placements.size} footprints · ${editor.project.board.routes.size} manual F.Cu routes · ${pr?.airwires?.size?:0} remaining airwires · approximate clearance checks only"
             editor.invalidate();boardView.invalidate();return
         }
-        inspector.text=if(p==null)"No component selected · ${ElectronicLibrary.presets.size} built-in electronics presets · MCU library is a pin planner only"
+        inspector.text=if(p==null)"No component selected · Offline catalog v2 loaded · ${ElectronicLibrary.presets.size} electronics · ${FootprintCatalog.available.size} footprints · ${McuLibrary.boards.size} MCU pinouts (planning only)"
             else {
                 val v=r?.voltageAcross(p);val i=r?.currentIn(p)
                 "${p.ref} (${p.type}) · Value ${p.value} · V=${v?.let{String.format(Locale.US,"%.3f",it)}?:"—"} V · I=${i?.let{String.format(Locale.US,"%.6f",it)}?:"—"} A"
@@ -551,7 +556,7 @@ class MainActivity:Activity() {
     private fun showProjectInfo(){AlertDialog.Builder(this).setTitle("Blaze CircuitLab · Native foundation")
         .setMessage("Implemented: Android Canvas editor, DC/AC voltage sources, dependent VCVS amplifier, DC current source, R, C, ideal L, approximate LED, switch, explicit junctions, MNA, oscilloscope, offline autosave, JSON, experimental KiCad schematic and SPICE linear netlist export.\n\nPCB workspace includes approximate manual pad-to-pad copper routing; no fabrication-grade DRC, vias, Gerber or KiCad PCB validation. Not implemented: real MCU emulation or professional SPICE-grade accuracy.\n\nOffline. Bundled: electronics presets, original BlazeBasic KiCad footprints, Arduino/ESP pin planning and CSV. Firmware emulation not implemented.\n\nOffline. No account. No WebView.")
         .setPositiveButton("OK",null).show()}
-    override fun onResume(){super.onResume();handler.removeCallbacks(timer);handler.post(timer)}
-    override fun onPause(){running=false;handler.removeCallbacks(timer);saveAutosave();super.onPause()}
+    override fun onResume(){super.onResume();handler.removeCallbacks(timer);if(::editor.isInitialized)handler.post(timer)}
+    override fun onPause(){running=false;handler.removeCallbacks(timer);if(::editor.isInitialized)saveAutosave();super.onPause()}
     override fun onDestroy(){destroyed=true;handler.removeCallbacks(timer);worker.shutdownNow();super.onDestroy()}
 }
