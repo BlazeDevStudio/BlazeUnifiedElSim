@@ -19,14 +19,19 @@ object KiCadPackage {
         for(id in used){require("BlazeBasic.pretty/${id.substringAfter(':')}.kicad_mod" in files){"Missing bundled footprint $id"}}
         require(files.size<=50 && files.values.sumOf{it.size.toLong()}<=5_000_000) { "Library resource limit" }
         val safe=c.title.replace(Regex("[^A-Za-z0-9_-]"),"_").take(50).ifBlank{"Circuit"}
+        val board=if(c.board.placements.isNotEmpty() && c.board.placements.all{it.footprintId.startsWith("BlazeBasic:")})
+            KiCadBoard.export(c,files)
+        else null // External footprint IDs cannot be materialized from this ZIP.
         val entries=sortedMapOf<String,ByteArray>()
         entries["$safe.kicad_sch"]=result.schematic.toByteArray(Charsets.UTF_8)
+        if(board!=null)entries["$safe.kicad_pcb"]=board.pcb.toByteArray(Charsets.UTF_8)
         entries["README.txt"]=("Blaze CircuitLab KiCad 9 experimental schematic export.\n"+
             "Open the .kicad_sch in KiCad 9; local footprint table in fp-lib-table.\n"+
             "Eleven supported circuit classes including ground are exported as editable BlazeCircuitLab symbols.\n"+
-            "There is no firmware emulation, no PCB board file and no routed copper included.\n"+
+            (if(board!=null)"Includes editable .kicad_pcb with actual placed footprints and manually drawn F.Cu tracks only.\n" else "No PCB board included; no local placements or unsupported external footprints.\n")+
+            "No firmware emulation, no DRC approval, no production Gerbers.\n"+
             "Physical footprint geometry is preliminary; verify sizes, ERC and DRC before manufacture.\n"+
-            "WARNINGS:\n"+result.warnings.joinToString("\n")+"\n").toByteArray(Charsets.UTF_8)
+            "WARNINGS:\n"+(result.warnings+(board?.warnings?:emptyList())).joinToString("\n")+"\n").toByteArray(Charsets.UTF_8)
         for((name,bytes) in files)entries[if(name=="README.txt")"LIBRARY-NOTES.txt" else name]=bytes
         val out=ByteArrayOutputStream()
         ZipOutputStream(out).use{zip->
