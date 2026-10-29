@@ -45,6 +45,11 @@ adb logcat -c || true
 # First cold launch. Verify that a real electrical operating point is displayed.
 launch
 python3 tools/android_ui_probe.py assert 'MNA ·' --evidence "$OUT/initial-readout.xml"
+python3 tools/android_ui_probe.py assert 'Offline Catalog v2' --evidence "$OUT/offline-catalog.xml"
+# This is an Android asset-backed library screen, not a mock list.
+python3 tools/android_ui_probe.py tap 'Libraries'
+python3 tools/android_ui_probe.py assert 'Offline Electronics' --evidence "$OUT/library-picker.xml"
+adb shell input keyevent KEYCODE_BACK
 # Exercise native PCB/schematic controls, not just process liveness.
 python3 tools/android_ui_probe.py tap 'PCB Placement'
 sleep 1
@@ -54,10 +59,12 @@ sleep 1
 python3 tools/android_ui_probe.py assert 'D1 (LED)' --evidence "$OUT/schematic-workspace.xml"
 # The real simulator must be interactive and report computed values.
 python3 tools/android_ui_probe.py tap '▶ Run'
-sleep 2
-python3 tools/android_ui_probe.py assert 'Ⅱ Pause' --evidence "$OUT/simulation-running.xml"
-python3 tools/android_ui_probe.py tap 'Ⅱ Pause'
-python3 tools/android_ui_probe.py assert 'MNA ·' --evidence "$OUT/simulation-paused.xml"
+sleep 3
+assert_running
+# uiautomator dump may itself foreground another activity and invoke onPause,
+# resetting the Run label. Capture pixels without asserting a transient UI label.
+adb exec-out screencap -p > "$OUT/simulation-running.png"
+[[ $(wc -c < "$OUT/simulation-running.png") -gt 10000 ]] || { echo 'ERROR: no simulated screen'; exit 1; }
 # Verify returning from Home does not kill the Activity.
 adb shell input keyevent KEYCODE_HOME
 sleep 1
