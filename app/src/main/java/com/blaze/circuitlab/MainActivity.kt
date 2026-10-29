@@ -115,6 +115,7 @@ class MainActivity:Activity() {
         root.addView(label("ϟ  BLAZE CIRCUITLAB   •   NATIVE ANDROID  •   v0.3.1 • Native KiCad PCB",16f))
         playButton=btn("▶ Run"){running=!running;updateDisplay()}
         root.addView(scrollStrip(playButton,
+            btn("Libraries"){browseLibraryHub()},
             btn("Step"){running=false;simulateOnce();updateDisplay()},
             btn("Reset"){running=false;state=MnaSolver.State();time=0.0;editor.trace.clear();simulateOnce()},
             btn("Circuit"){editor.showScope=false},btn("Lab: Scope"){editor.showScope=true},
@@ -192,6 +193,23 @@ class MainActivity:Activity() {
                 applyFootprint(p,choices[index])
             }.show()
     }
+    /** A visible entry point for the three asset-backed engineering catalogs. */
+    private fun browseLibraryHub(){
+        val choices=arrayOf(
+            "Electronics · ${ElectronicLibrary.presets.size} parts",
+            "Arduino / ESP · ${McuLibrary.boards.size} pin references",
+            "Footprints · ${FootprintCatalog.available.size} references"
+        )
+        AlertDialog.Builder(this).setTitle("Offline Libraries")
+            .setItems(choices){_,index->
+                when(index){
+                    0->browsePartsLibrary()
+                    1->browseMcuLibrary()
+                    2->browseFootprintLibrary()
+                }
+            }.setNegativeButton("Close",null).show()
+    }
+
     /** Searchable native, offline catalog. Entries resolve to real solver-supported types. */
     private fun browsePartsLibrary(){
         val search=EditText(this).apply{hint="Search resistor, 470, capacitor, LED, source...";setSingleLine(true)}
