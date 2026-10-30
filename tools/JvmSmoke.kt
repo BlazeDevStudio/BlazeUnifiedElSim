@@ -454,6 +454,9 @@ fun main() {
         check(entries.size>=17)
         check(entries.keys.any{it.endsWith(".kicad_sch")})
         val boardEntry=entries.entries.single{it.key.endsWith(".kicad_pcb")}
+        val projectEntry=entries.entries.single{it.key.endsWith(".kicad_pro")}
+        check(projectEntry.key==boardEntry.key.removeSuffix(".kicad_pcb")+".kicad_pro")
+        check(projectEntry.value.decodeToString()=="{}")
         check(KiCad.balanced(boardEntry.value.decodeToString()))
         check(boardEntry.value.decodeToString().contains("(net 0 \"\")"))
         check(entries["BlazeBasic.pretty/LED_D3.kicad_mod"]!!.decodeToString().contains("(pad \"2\""))
