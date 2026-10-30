@@ -68,6 +68,12 @@ jobs:
           cp samples/LED_Placed_Routed.kicad_pcb build/kicad-interop/pcb/project/Board.kicad_pcb
           cp app/src/main/assets/kicad/fp-lib-table build/kicad-interop/pcb/project/fp-lib-table
           cp -r app/src/main/assets/kicad/BlazeBasic.pretty build/kicad-interop/pcb/project/
+          # A bare .kicad_pcb does not establish a KiCad project on the CLI.
+          # Give the board a same-stem KiCad 9 project so the project-local
+          # fp-lib-table is actually loaded. Empty JSON means default rules;
+          # it is NOT a DRC override or waiver.
+          printf '{}\\n' > build/kicad-interop/pcb/project/Board.kicad_pro
+          test -s build/kicad-interop/pcb/project/Board.kicad_pro
           test -s build/kicad-interop/pcb/project/BlazeBasic.pretty/LED_D3.kicad_mod
           # KiCad exit 5 means DRC findings; do not suppress tool errors.
           # Even a zero-findings run is NEVER fabrication approval.
@@ -77,7 +83,7 @@ jobs:
           drc_exit=$?
           set -e
           python3 tools/verify_kicad_drc.py build/kicad-interop/pcb/native-drc.json \
-            --cli-exit "$drc_exit" --summary build/kicad-interop/pcb/native-drc-summary.json
+            --cli-exit "$drc_exit" --require-library BlazeBasic --summary build/kicad-interop/pcb/native-drc-summary.json
           echo "Actual KiCad DRC report retained; production PCB/fabrication status: NO_GO"
       - name: Retain validation evidence
         if: always()
