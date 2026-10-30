@@ -19,7 +19,28 @@ class DrcEvidenceError(ValueError):
 CATEGORIES = ("violations", "unconnected_items", "schematic_parity")
 
 
-def classify(report, cli_exit):
+def missing_library_configuration(report, nickname):
+    """Exact KiCad footprint-library registration failure; never waive it."""
+    if not isinstance(report, dict) or not isinstance(report.get("violations"), list):
+        raise DrcEvidenceError("Cannot inspect footprint library: missing violation array")
+    require = f"footprint library '{nickname}'"
+    for item in report["violations"]:
+        if not isinstance(item, dict):
+            raise DrcEvidenceError("Invalid KiCad violation item")
+        if item.get("type") != "lib_footprint_issues":
+            continue
+        description = item.get("description", "")
+        if not isinstance(description, str):
+            raise DrcEvidenceError("Invalid KiCad violation description")
+        if require in description and (
+            "does not include" in description or "not enabled" in description
+            or "does not exist" in description
+        ):
+            return True
+    return False
+
+
+def classify(report, cli_exit, require_library=None):
     if cli_exit not in (0, 5):
         raise DrcEvidenceError(f"KiCad CLI failed unexpectedly (exit {cli_exit}); no validated DRC")
     if not isinstance(report, dict):
@@ -42,6 +63,11 @@ def classify(report, cli_exit):
             if not isinstance(kind, str):
                 raise DrcEvidenceError(f"Invalid DRC rule type in {category}")
             types[f"{category}:{kind}"] += 1
+    if require_library and missing_library_configuration(report, require_library):
+        raise DrcEvidenceError(
+            f"Project cannot resolve footprint library {require_library!r}; "
+            "fix the project library table rather than waiving the DRC finding"
+        )
     total = sum(counts.values())
     if (cli_exit == 0 and total) or (cli_exit == 5 and not total):
         raise DrcEvidenceError(
@@ -68,10 +94,11 @@ def main(argv=None):
     parser.add_argument("report", type=Path)
     parser.add_argument("--cli-exit", type=int, required=True)
     parser.add_argument("--summary", type=Path, required=True)
+    parser.add_argument("--require-library", help="Fail if KiCad says this bundled footprint library is missing or disabled")
     args = parser.parse_args(argv)
     try:
         report = json.loads(args.report.read_text(encoding="utf-8"))
-        summary = classify(report, args.cli_exit)
+        summary = classify(report, args.cli_exit, require_library=args.require_library)
     except (DrcEvidenceError, OSError, ValueError) as error:
         parser.exit(1, f"DRC evidence INVALID: {error}\n")
     args.summary.parent.mkdir(parents=True, exist_ok=True)
