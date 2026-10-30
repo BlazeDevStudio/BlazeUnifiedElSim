@@ -60,6 +60,29 @@ class NativeDrcEvidenceTest(unittest.TestCase):
             with self.subTest(status=status), self.assertRaises(drc.DrcEvidenceError):
                 drc.classify(contents, status)
 
+    def test_unregistered_blazebasic_is_a_hard_regression(self):
+        issue = {"type": "lib_footprint_issues",
+                 "description": "The current configuration does not include the footprint library 'BlazeBasic'."}
+        with self.assertRaisesRegex(drc.DrcEvidenceError, "cannot resolve"):
+            drc.classify(report(violations=[issue]), 5, require_library="BlazeBasic")
+        # Recorded errors remain visible when no specific library assertion is supplied.
+        result = drc.classify(report(violations=[issue]), 5)
+        self.assertEqual(result["total_findings"], 1)
+        self.assertFalse(result["reported_drc_clean"])
+
+    def test_disabled_blazebasic_is_a_hard_regression(self):
+        issue = {"type": "lib_footprint_issues",
+                 "description": "The footprint library 'BlazeBasic' is not enabled in the current configuration."}
+        with self.assertRaisesRegex(drc.DrcEvidenceError, "cannot resolve"):
+            drc.classify(report(violations=[issue]), 5, require_library="BlazeBasic")
+
+    def test_other_real_violations_are_never_suppressed(self):
+        issue = {"type": "clearance", "description": "Copper clearance violation"}
+        result = drc.classify(report(violations=[issue]), 5, require_library="BlazeBasic")
+        self.assertEqual(result["rule_types"]["violations:clearance"], 1)
+        self.assertFalse(result["reported_drc_clean"])
+        self.assertEqual(result["admission"], "NO_GO")
+
     def test_incorrect_top_level_shape_fails_closed(self):
         for value in (None, [], "broken", {}):
             with self.subTest(value=value), self.assertRaises(drc.DrcEvidenceError):
