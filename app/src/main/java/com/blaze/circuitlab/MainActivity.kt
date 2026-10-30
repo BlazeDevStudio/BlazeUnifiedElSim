@@ -314,28 +314,14 @@ class MainActivity:Activity() {
     }
     private fun exportKiCadPackage(){
         val bytes=runCatching{
-            val resource="kicad/BlazeBasic.pretty"
-            val files=mutableMapOf<String,ByteArray>()
-            files["fp-lib-table"]=assets.open("kicad/fp-lib-table").use{it.readBytes()}
-            files["sym-lib-table"]=assets.open("kicad/sym-lib-table").use{it.readBytes()}
-            files["BlazeCircuitLab.kicad_sym"]=assets.open("kicad/BlazeCircuitLab.kicad_sym").use{it.readBytes()}
-            files["README.txt"]=assets.open("kicad/README.txt").use{it.readBytes()}
-            for(name in assets.list(resource)?:emptyArray())if(name.endsWith(".kicad_mod")){
-                files["BlazeBasic.pretty/$name"]=assets.open("$resource/$name").use{it.readBytes()}
-            }
-            KiCadPackage.pack(editor.project,files)
+            KiCadPackage.pack(editor.project, KiCadAssetRepository(assets).forPackage())
         }.getOrElse{return show("KiCad ZIP export rejected: ${it.message}")}
         exportBinary=bytes
         chooseSave("application/zip","${safeName()}-kicad-library.zip",105)
     }
     private fun exportKiCadBoard(){
         val exported=runCatching{
-            val files=mutableMapOf<String,ByteArray>()
-            val folder="kicad/BlazeBasic.pretty"
-            for(name in assets.list(folder)?:emptyArray())if(name.endsWith(".kicad_mod")){
-                files["BlazeBasic.pretty/$name"]=assets.open("$folder/$name").use{it.readBytes()}
-            }
-            KiCadBoard.export(editor.project,files)
+            KiCadBoard.export(editor.project, KiCadAssetRepository(assets).footprints())
         }.getOrElse{return show("PCB KiCad export rejected: ${it.message}")}
         exportPayload=exported.pcb
         AlertDialog.Builder(this).setTitle("KiCad PCB handoff · ${exported.mappedPads} pads")
