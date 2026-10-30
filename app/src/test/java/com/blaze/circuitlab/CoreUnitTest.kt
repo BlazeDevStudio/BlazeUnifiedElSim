@@ -170,6 +170,34 @@ class CoreUnitTest {
         assertTrue(output.pcb.contains("(footprint \"BlazeBasic:LED_D3\""))
         assertTrue(KiCad.balanced(output.pcb))
     }
+    @Test fun exportedKiCadZipIncludesProjectWithLocalFootprints() {
+        val base=java.io.File("src/main/assets/kicad").takeIf{it.isDirectory}
+            ?:java.io.File("app/src/main/assets/kicad")
+        val files=mutableMapOf<String,ByteArray>()
+        for(name in listOf("fp-lib-table","sym-lib-table","BlazeCircuitLab.kicad_sym")){
+            files[name]=java.io.File(base,name).readBytes()
+        }
+        java.io.File(base,"BlazeBasic.pretty").listFiles()!!.forEach{
+            files["BlazeBasic.pretty/${it.name}"]=it.readBytes()
+        }
+        val c=DemoCircuits.led()
+        BoardPlanner.assign(c,c.parts.single{it.ref=="R1"}.uuid,"BlazeBasic:R_0805")
+        BoardPlanner.assign(c,c.parts.single{it.ref=="D1"}.uuid,"BlazeBasic:LED_D3")
+        val entries=mutableMapOf<String,ByteArray>()
+        java.util.zip.ZipInputStream(KiCadPackage.pack(c,files).inputStream()).use { zip ->
+            while(true){
+                val entry=zip.nextEntry?:break
+                entries[entry.name]=zip.readBytes()
+            }
+        }
+        val pcb=entries.keys.single{it.endsWith(".kicad_pcb")}
+        val project=entries.keys.single{it.endsWith(".kicad_pro")}
+        assertEquals(pcb.removeSuffix(".kicad_pcb")+".kicad_pro",project)
+        assertEquals("{}",entries.getValue(project).toString(Charsets.UTF_8))
+        assertTrue(entries.getValue("fp-lib-table").toString(Charsets.UTF_8).contains("KIPRJMOD"))
+        assertTrue(entries.containsKey("BlazeBasic.pretty/LED_D3.kicad_mod"))
+    }
+
     @Test fun nativeKiCadBoardCannotInventExternalFootprintGeometry() {
         val c=DemoCircuits.led();val r=c.parts.single{it.ref=="R1"}
         BoardPlanner.assign(c,r.uuid,"Resistor_SMD:R_0805_2012Metric")
