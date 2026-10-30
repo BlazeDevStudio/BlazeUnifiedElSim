@@ -72,7 +72,7 @@ jobs:
           # Give the board a same-stem KiCad 9 project so the project-local
           # fp-lib-table is actually loaded. Empty JSON means default rules;
           # it is NOT a DRC override or waiver.
-          printf '{}\\n' > build/kicad-interop/pcb/project/Board.kicad_pro
+          echo '{}' > build/kicad-interop/pcb/project/Board.kicad_pro
           test -s build/kicad-interop/pcb/project/Board.kicad_pro
           test -s build/kicad-interop/pcb/project/BlazeBasic.pretty/LED_D3.kicad_mod
           # KiCad exit 5 means DRC findings; do not suppress tool errors.
