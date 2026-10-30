@@ -1,0 +1,7 @@
+* Blaze CircuitLab experimental SPICE export
+* RL Current Rise
+L1 N2 0 0.1
+R1 N1 N2 10
+V1 N1 0 5
+.tran 0.001 0.1
+.end

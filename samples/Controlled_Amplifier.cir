@@ -1,0 +1,7 @@
+* Blaze CircuitLab experimental SPICE export
+* Behavioral Controlled Amplifier ×10
+E_E1 N3 0 N2 0 10
+R1 N3 0 1000
+V1 N2 0 1
+.tran 0.001 0.1
+.end

@@ -1,0 +1,97 @@
+name: KiCad 9 native schematic interoperability
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/kicad-interop.yml'
+      - 'samples/*.kicad_sch'
+      - 'samples/*.kicad_pcb'
+      - 'app/src/main/java/com/blaze/circuitlab/core/KiCad.kt'
+      - 'app/src/main/java/com/blaze/circuitlab/core/KiCadBoard.kt'
+      - 'tools/check_kicad_pcb_contract.py'
+      - 'tools/verify_kicad_drc.py'
+      - 'tests/test_kicad_drc.py'
+permissions:
+  contents: read
+jobs:
+  kicad-schematic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install stable KiCad 9 CLI
+        run: |
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update -q
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends kicad
+          kicad-cli version | tee kicad-version.txt
+          grep -E '^9\.' kicad-version.txt
+      - name: Parse original exported schematics with actual KiCad
+        run: |
+          mkdir -p build/kicad-interop
+          for schematic in samples/*.kicad_sch; do
+            stem="$(basename "$schematic" .kicad_sch)"
+            echo "Testing $schematic"
+            test -s "$schematic"
+            kicad-cli sch export netlist --format kicadxml -o "build/kicad-interop/${stem}.xml" "$schematic"
+            test -s "build/kicad-interop/${stem}.xml"
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          for p in sorted(Path('build/kicad-interop').glob('*.xml')):
+              root=ET.parse(p).getroot()
+              components=root.find('./components')
+              assert components is not None and len(components) >= 1, f'No actual KiCad components: {p}'
+              print('KiCad opened/exported',p.name,'components',len(components))
+          PY
+          python3 tools/check_kicad_net_contract.py build/kicad-interop
+      - name: Validate bundled KiCad footprint files through KiCad CLI
+        run: |
+          mkdir -p build/kicad-interop/footprints
+          kicad-cli fp export svg --layers F.Cu --output build/kicad-interop/footprints app/src/main/assets/kicad/BlazeBasic.pretty
+          count="$(find build/kicad-interop/footprints -name '*.svg' | wc -l)"
+          echo "Native footprint SVG exports: $count"
+          test "$count" -ge 18
+      - name: Parse and verify native KiCad PCB export with real pcbnew
+        run: |
+          test -s samples/LED_Placed_Routed.kicad_pcb
+          mkdir -p build/kicad-interop/pcb
+          kicad-cli pcb export svg --mode-single --layers F.Cu,Edge.Cuts --output build/kicad-interop/pcb/board.svg samples/LED_Placed_Routed.kicad_pcb
+          test "$(find build/kicad-interop/pcb -type f -name '*.svg' | wc -l)" -ge 1
+          /usr/bin/python3 tools/check_kicad_pcb_contract.py samples/LED_Placed_Routed.kicad_pcb
+      - name: Run real KiCad 9 PCB DRC and capture all violation categories
+        run: |
+          # Resolve the exact bundled physical footprint library in the same
+          # relative structure as the Android KiCad ZIP (KIPRJMOD).
+          mkdir -p build/kicad-interop/pcb/project
+          cp samples/LED_Placed_Routed.kicad_pcb build/kicad-interop/pcb/project/Board.kicad_pcb
+          cp app/src/main/assets/kicad/fp-lib-table build/kicad-interop/pcb/project/fp-lib-table
+          cp -r app/src/main/assets/kicad/BlazeBasic.pretty build/kicad-interop/pcb/project/
+          # A bare .kicad_pcb does not establish a KiCad project on the CLI.
+          # Give the board a same-stem KiCad 9 project so the project-local
+          # fp-lib-table is actually loaded. Empty JSON means default rules;
+          # it is NOT a DRC override or waiver.
+          echo '{}' > build/kicad-interop/pcb/project/Board.kicad_pro
+          test -s build/kicad-interop/pcb/project/Board.kicad_pro
+          test -s build/kicad-interop/pcb/project/BlazeBasic.pretty/LED_D3.kicad_mod
+          # KiCad exit 5 means DRC findings; do not suppress tool errors.
+          # Even a zero-findings run is NEVER fabrication approval.
+          set +e
+          kicad-cli pcb drc --format json --severity-all --exit-code-violations \
+            --output build/kicad-interop/pcb/native-drc.json build/kicad-interop/pcb/project/Board.kicad_pcb
+          drc_exit=$?
+          set -e
+          python3 tools/verify_kicad_drc.py build/kicad-interop/pcb/native-drc.json \
+            --cli-exit "$drc_exit" --require-library BlazeBasic --summary build/kicad-interop/pcb/native-drc-summary.json
+          echo "Actual KiCad DRC report retained; production PCB/fabrication status: NO_GO"
+      - name: Retain validation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BlazeCircuitLab-KiCad9-validation
+          path: |
+            build/kicad-interop/**
+            kicad-version.txt
+          if-no-files-found: warn
+          retention-days: 10

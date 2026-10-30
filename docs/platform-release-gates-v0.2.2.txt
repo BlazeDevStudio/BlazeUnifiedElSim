@@ -1,0 +1,1 @@
+Android SDK/Gradle/ADB/KiCad CLI: not installed; APK, device and native KiCad tests NOT run

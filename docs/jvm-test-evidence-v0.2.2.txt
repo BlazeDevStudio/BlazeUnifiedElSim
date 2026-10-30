@@ -1,0 +1,35 @@
+PASS original LED demo and DC current
+PASS original switch closed and opened
+PASS original RC demo transient
+PASS crossing wires without junction not connected
+PASS unmarked T intersection is rejected
+PASS end-to-end segment connection
+PASS duplicate refs validation
+PASS no GND -> diagnostic
+PASS open disconnected circuit -> floating diagnostic
+PASS KiCad serializer generated syntax
+PASS KiCad unsupported component fails explicitly
+PASS KiCad deterministic output
+PASS LED branch current matches original HTML alpha
+PASS Switch branch current matches original HTML alpha
+PASS RC first timestep matches original HTML alpha
+PASS PCB data mapping uses authoritative net graph
+PASS PCB mapping rejects invented voltage-source footprint
+PASS PCB mapping rejects missing terminal mapping
+PASS PCB explicit footprint assignment builds one unrouted net
+PASS PCB footprint pin polarity is physical KiCad LED cathode 1 anode 2
+PASS PCB rejects impossible position and missing footprint
+PASS PCB layout snapshots are deep copies
+PASS PCB has no fabricated copper traces
+PASS manual F.Cu route joins same-net pads and removes one airwire
+PASS different-net pad connection is rejected without mutation
+PASS invalid copper geometry and unsupported layers are refused
+PASS routing snapshots are deep copies and retain pad identities
+PASS route becomes invalid if footprint motion would cause a diagonal segment
+PASS approximate DRC refuses copper on a different-net pad
+PASS route rejects missing pad and nonfinite geometry
+PASS route cannot silently cross an obstacle pad
+PASS different-net intersecting copper tracks are rejected
+PASS unrouted airwires are not falsely classified as copper
+PASS PCB edits do not change alpha-based solver or KiCad electrical nets
+SUMMARY: 34/34 passed

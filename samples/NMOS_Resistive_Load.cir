@@ -1,0 +1,9 @@
+* Blaze CircuitLab experimental SPICE export
+* NMOS Resistive Drain Load
+M_M1 N3 N4 0 0 BCL_NMOS_M1
+RD1 N2 N3 1000
+V1 N2 0 5
+V2 N4 0 4
+.model BCL_NMOS_M1 NMOS(Level=1 Vto=2 Kp=0.002 Lambda=0)
+.tran 0.001 0.1
+.end

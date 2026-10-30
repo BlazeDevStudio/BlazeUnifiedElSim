@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><meta name="theme-color" content="#080f18"/><title>Blaze CircuitLab — Offline Electronics Simulator</title><style>
+:root{color-scheme:dark;--bg:#08111b;--panel:#101c29;--panel2:#0d1723;--line:#22364a;--soft:#93a4b6;--text:#e8f4ff;--teal:#4bddc4;--orange:#f9ac55}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Roboto,sans-serif;font-size:14px}button,input{font:inherit}button{border:1px solid #2c4054;background:#192838;color:#e1effd;border-radius:8px;padding:9px 11px;cursor:pointer;white-space:nowrap;transition:background .15s}button:hover{background:#25384a}button:active{transform:scale(.98)}button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}.app{max-width:1920px;margin:0 auto}.topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 22px;gap:14px;background:#0b1520}.brand{display:flex;align-items:center;gap:12px;min-width:216px}.brandicon{display:grid;place-items:center;width:41px;height:41px;background:linear-gradient(135deg,#215c61,#205c47);border-radius:12px;color:#7bfde3;font-size:30px;box-shadow:0 0 20px #48bdae24}.brand strong{font-size:19px;letter-spacing:-.7px;display:block}.brand strong span{color:var(--teal)}.brand small{font-size:9px;letter-spacing:1.2px;color:#7f94a8;display:block;margin-top:2px}.center-status{display:flex;gap:9px;align-items:center;font-size:11px;color:#94c6ba;letter-spacing:.7px}.statusdot,.scope-led{height:8px;width:8px;border-radius:50%;background:#54e3a0;display:inline-block;box-shadow:0 0 12px #54e3a077}.statusdot.paused{background:#e4ac5c;box-shadow:none}.time{margin-left:12px;color:#8198ad}.actions,.compact-actions{display:flex;align-items:center;gap:7px}.actions button{min-width:40px}.actions .primary{background:#195b4f;color:#c7fff1;border-color:#287b6c}.actions .primary:hover{background:#206c5f}.bodygrid{display:grid;grid-template-columns:228px minmax(360px,1fr) 275px;min-height:calc(100dvh - 108px)}.panel{background:var(--panel2)}.toolbox{border-right:1px solid var(--line);display:flex;flex-direction:column}.inspector{border-left:1px solid var(--line)}.panel-header{display:flex;justify-content:space-between;align-items:center;font-weight:800;color:#cddae5;letter-spacing:1px;font-size:10px;padding:20px 18px 16px}.tiny{color:#667c90;font-size:9px}.tool-list{padding:0 10px}.tool{width:100%;display:flex;align-items:center;gap:12px;margin-bottom:3px;background:transparent;border-color:transparent;text-align:left;color:#abc2d6;font-size:12px;padding:8px}.tool.selected{background:#153c43;border:1px solid #225a60;color:#86f7e4}.toolicon{width:25px;display:grid;place-items:center;font-size:20px;color:#7ecfe7}.tool.selected .toolicon{color:var(--teal)}.tool kbd{margin-left:auto;font-size:9px;color:#647e91}.tool-divider{height:1px;background:#233548;margin:13px 8px}.toolbox-foot{margin:auto 18px 16px;border-top:1px solid var(--line);padding-top:15px;color:#98adbd;font-size:11px;line-height:1.6}.toolbox-foot div{font-size:9px;font-weight:800;letter-spacing:1px;color:#56ccb8}.toolbox-foot p{margin:6px 0}.main{padding:20px 22px;min-width:0;background:linear-gradient(180deg,#0b1825,#0a1420)}.workspace-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.workspace-head h1{font-size:20px;margin:0 0 4px;font-weight:700;letter-spacing:-.3px}.workspace-head p{font-size:11px;color:#7f9bb0;margin:0}.compact-actions button{padding:6px 10px;min-width:29px}.compact-actions span{font-size:10px;color:#90abbf;min-width:36px;text-align:center}.canvas-wrap{height:min(57vh,550px);min-height:310px;border:1px solid #294053;border-radius:13px;overflow:hidden;position:relative;background:#0b1420;box-shadow:inset 0 0 80px #0004}#schematic{width:100%;height:100%;touch-action:none;cursor:crosshair;display:block;user-select:none}#schematic [data-component]{cursor:pointer}#schematic .dragged{filter:drop-shadow(0 0 7px #50e3d4)}#schematic .term{cursor:crosshair}.canvas-tooltip{position:absolute;left:15px;top:13px;color:#7593ab;font-size:11px;pointer-events:none}.canvas-watermark{position:absolute;right:13px;bottom:12px;color:#4c6376;font-size:9px;letter-spacing:1px;pointer-events:none}.bottom-strip{display:flex;align-items:center;gap:20px;padding:13px 0;min-height:68px;flex-wrap:wrap}.readout{display:flex;gap:6px;flex-direction:column}.readout .eyebrow{font-size:9px;letter-spacing:.9px;color:#718a9f}.readout .value{font-size:13px;color:#d2e5f1;font-variant-numeric:tabular-nums}.readout:first-child .value{color:#57e6c9}#warning{margin-left:auto;color:#efb979;font-size:11px}.scope{border:1px solid #263d51;border-radius:11px;overflow:hidden;padding:11px 13px 7px;background:#0e1b28}.scope-title{display:flex;gap:12px;justify-content:space-between;align-items:center;font-size:10px}.scope-title strong{letter-spacing:1px;color:#cee2f2}.scope-title #scopeLabel{color:#7e9aaf;margin-left:auto}.scope-title button{border:none;background:transparent;font-size:10px;color:#7babbf;padding:5px}#scopeCanvas{display:block;width:100%;height:130px}.inspector #inspectBody{padding:0 17px 20px;border-bottom:1px solid var(--line);min-height:205px}.tag{padding:3px 7px;border-radius:4px;background:#1a4c43;color:#7debd4;font-size:9px}.selected-head{display:flex;gap:12px;align-items:center;margin-bottom:16px}.selected-graphic{border:1px solid #295562;border-radius:10px;background:#14343c;width:47px;height:47px;display:grid;place-items:center;color:#6cebd2;font-size:26px}.selected-head strong{display:block;font-size:14px}.selected-head span{font-size:11px;color:#7b96a9}.info-row{display:flex;justify-content:space-between;margin:10px 0;font-size:11px;color:#9eb7c9}.info-row strong{color:#e6f4fc;font-weight:600}.field{margin:16px 0}.field label{display:flex;justify-content:space-between;font-size:11px;color:#9bb3c5;margin-bottom:9px}.field label strong{color:#e5eff7;font-variant-numeric:tabular-nums}.field input[type=range]{width:100%;accent-color:#4edcc3}.option-row{display:flex;gap:9px;margin-top:13px}.option-row button{flex:1;font-size:11px;padding:9px 4px}.option-row button.danger{color:#ff9999}.filepanel{padding:0 17px}.filepanel .panel-header{padding:17px 0 12px}.file-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}.file-actions button{font-size:10px;padding:10px 4px}.file-note{font-size:10px;color:#8196a9;line-height:1.5}.empty-inspector{font-size:12px;color:#91a9bd;line-height:1.6;padding:12px 0}.empty-inspector h3{color:#d2e3ec;font-size:15px}.foot{height:36px;padding:10px 19px;background:#09121b;color:#6f8294;display:flex;justify-content:space-between;font-size:10px;border-top:1px solid var(--line);gap:10px}#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#20463f;color:#d8fff1;padding:10px 20px;border:1px solid #398273;border-radius:9px;box-shadow:0 10px 35px #0006;display:none;z-index:10;text-align:center}.smallnote{color:#85a0b2;font-size:10px;line-height:1.5}.warnnote{color:#ffbc75}.quickval{color:#65eaca!important}
+@media(max-width:1100px){.bodygrid{grid-template-columns:173px minmax(340px,1fr) 232px}.toolbox .panel-header{padding-left:10px}.tool{gap:5px}.main{padding:16px 12px}.inspector #inspectBody,.filepanel{padding-left:10px;padding-right:10px}.topbar{padding:0 12px}}
+@media(max-width:850px){.bodygrid{display:flex;flex-direction:column}.topbar{height:63px;padding:0 9px}.brand{min-width:0}.brand strong{font-size:16px}.brand small{font-size:8px;letter-spacing:.2px}.brandicon{height:34px;width:34px;font-size:25px}.center-status{display:none}.actions{margin-left:auto}.actions button{padding:7px}.toolbox{border-right:none;border-bottom:1px solid var(--line)}.toolbox .panel-header,.toolbox-foot,.tool-divider{display:none}.tool-list{display:flex;overflow-x:auto;scrollbar-width:none;padding:7px 6px;gap:5px}.tool{width:auto;min-width:68px;flex-shrink:0;flex-direction:column;gap:1px;margin:0;padding:5px 8px;font-size:9px;align-items:center}.toolicon{height:23px}.tool kbd{display:none}.main{padding:12px}.canvas-wrap{height:49dvh;min-height:340px}.workspace-head h1{font-size:17px}.workspace-head p{display:none}.inspector{border-left:0;border-top:1px solid var(--line)}.inspector #inspectBody{min-height:140px}.inspector .panel-header{padding:15px}.inspector #inspectBody{padding:0 15px 14px}.filepanel{padding:0 15px 16px}.file-actions{grid-template-columns:repeat(4,1fr)}.foot{display:none}.scope{margin-bottom:10px}.bottom-strip{gap:14px}#warning{margin-left:0}}
+@media(max-width:480px){.workspace-head{flex-wrap:wrap}.workspace-head>div:first-child{max-width:45%}.compact-actions{margin-left:auto}.canvas-wrap{height:43dvh;min-height:320px}.readout .value{font-size:11px}.bottom-strip{gap:12px}.file-actions{grid-template-columns:repeat(2,1fr)}.scope-title #scopeLabel{display:none}}
+
+</style></head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><span class="brandicon">ϟ</span><div><strong>Blaze<span>Circuit</span> Lab</strong><small>OFFLINE CIRCUIT STUDIO · ALPHA 0.1</small></div></div>
+  <div class="center-status"><span class="statusdot" id="statusDot"></span><span id="simLabel">SIMULATING</span><span class="time" id="simTime">t = 0.00 s</span></div>
+  <div class="actions"><button id="runBtn" class="primary">Ⅱ Pause</button><button id="stepBtn" title="Step time" aria-label="Step">▸|</button><button id="resetBtn" title="Reset time and capacitor states">↻</button></div>
+</header>
+<div class="bodygrid">
+ <aside class="toolbox panel"><div class="panel-header"><span>COMPONENTS</span><span class="tiny">PLACE ON CANVAS</span></div>
+   <div class="tool-list" id="toolList">
+    <button class="tool selected" data-tool="select"><span class="toolicon">↖</span><span>Select / Move</span><kbd>V</kbd></button>
+    <button class="tool" data-tool="wire"><span class="toolicon">⌁</span><span>Wire</span><kbd>W</kbd></button>
+    <button class="tool" data-tool="pan"><span class="toolicon">✥</span><span>Pan canvas</span></button>
+    <div class="tool-divider"></div>
+    <button class="tool" data-tool="V"><span class="toolicon">⊕</span><span>DC voltage</span></button>
+    <button class="tool" data-tool="AC"><span class="toolicon">∿</span><span>AC voltage</span></button>
+    <button class="tool" data-tool="R"><span class="toolicon">〽</span><span>Resistor</span></button>
+    <button class="tool" data-tool="C"><span class="toolicon">∥</span><span>Capacitor</span></button>
+    <button class="tool" data-tool="LED"><span class="toolicon">↗</span><span>LED (basic model)</span></button>
+    <button class="tool" data-tool="SW"><span class="toolicon">⟍</span><span>Switch</span></button>
+    <button class="tool" data-tool="GND"><span class="toolicon">⏚</span><span>Ground</span></button>
+   </div>
+   <div class="toolbox-foot"><div>QUICK START</div><p>Select a component, tap the grid to place it. Choose Wire, then tap two points to connect them.</p></div>
+ </aside>
+ <main class="main">
+  <div class="workspace-head"><div><h1 id="circuitTitle">LED Current Limiter</h1><p>Explore current, voltage and component behavior live.</p></div><div class="compact-actions"><button id="undoBtn" title="Undo">↶</button><button id="zoomOutBtn" title="Zoom out">−</button><span id="zoomLabel">100%</span><button id="zoomInBtn" title="Zoom in">+</button><button id="fitBtn" title="Fit view">⊡</button></div></div>
+  <div class="canvas-wrap"><svg id="schematic" role="img" aria-label="Interactive circuit schematic" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M 24 0 L 0 0 0 24" fill="none" stroke="#263442" stroke-width="0.65"/><circle cx="0" cy="0" r="1" fill="#293949"/></pattern></defs><rect x="0" y="0" width="5000" height="5000" x="-1000" y="-1000" fill="url(#grid)"/></svg><div class="canvas-tooltip" id="canvasHint">Select any component to inspect values</div><div class="canvas-watermark">BLAZE CIRCUITLAB · WORKSPACE</div></div>
+  <div class="bottom-strip"><div class="readout"><span class="eyebrow">LIVE READOUT</span><span class="value" id="liveReadout">—</span></div><div class="readout"><span class="eyebrow">COMPONENTS</span><span class="value" id="partsReadout">—</span></div><div class="readout"><span class="eyebrow">SOLVER</span><span class="value" id="solverReadout">MNA · DC/transient</span></div><span id="warning" role="status"></span></div>
+  <section class="scope panel"><div class="scope-title"><strong><span class="scope-led"></span> OSCILLOSCOPE</strong><span id="scopeLabel">Voltage versus time</span><button id="clearScopeBtn">Clear trace</button></div><canvas id="scopeCanvas" height="130"></canvas></section>
+ </main>
+ <aside class="inspector panel"><div class="panel-header"><span>INSPECTOR</span><span class="tag">LIVE</span></div><div id="inspectBody"></div><div class="filepanel"><div class="panel-header">PROJECT</div><div class="file-actions"><button id="demoLedBtn">LED demo</button><button id="demoRcBtn">RC demo</button><button id="demoSwitchBtn">Switch demo</button><button id="newBtn">Blank</button></div><div class="file-actions"><button id="saveBtn">↓ Export JSON</button><button id="importBtn">↑ Import</button></div><input id="fileInput" type="file" accept=".json,application/json" hidden/><p class="file-note">Saved locally after each edit. Export projects to keep an independent backup.</p></div></aside>
+</div>
+<footer class="foot"><span>Offline • Local simulation • No account</span><span>Basic MNA engine · Resistors / capacitors / voltage sources / switches / simplified LEDs</span></footer>
+<div id="toast" role="status"></div>
+</div><script>
+/** Blaze CircuitLab alpha: educational modified nodal analysis engine.
+ * Supported: independent DC/AC sine voltage sources, R, C (backward Euler),
+ * switches (finite resistance), basic piecewise-linear LED, ground, wires.
+ * NOT a SPICE-equivalent validated model; do not use for safety-critical design.
+ */
+(function(root){
+'use strict';
+const GRID=12;
+const snap=n=>Math.round(n/GRID)*GRID;
+const key=(p)=>`${snap(p.x)},${snap(p.y)}`;
+const tpos=(e)=>e.type==='GND'?[{x:e.x,y:e.y-24}]:[{x:e.x-48,y:e.y},{x:e.x+48,y:e.y}];
+const defaults={V:5,AC:5,R:330,C:0.001,LED:2,SW:1,GND:0};
+const attr=(type)=>({value:defaults[type],freq:2,closed:true});
+const add=(type,id,x,y,o={})=>({id,type,x,y,...attr(type),...o});
+const seg=(x1,y1,x2,y2)=>({a:{x:x1,y:y1},b:{x:x2,y:y2}});
+const demoLED=()=>({title:'LED Current Limiter',components:[add('V','V1',216,180,{value:5}),add('R','R1',384,180,{value:330}),add('LED','D1',552,180),add('GND','G1',240,384)],wires:[seg(264,180,336,180),seg(432,180,504,180),seg(600,180,672,180),seg(672,180,672,360),seg(672,360,168,360),seg(168,360,168,180)],version:1});
+const demoRC=()=>({title:'RC Charging & Discharging',components:[add('AC','AC1',216,180,{value:5,freq:0.5}),add('R','R1',384,180,{value:1000}),add('C','C1',552,180,{value:0.001}),add('GND','G1',240,384)],wires:[seg(264,180,336,180),seg(432,180,504,180),seg(600,180,672,180),seg(672,180,672,360),seg(672,360,168,360),seg(168,360,168,180)],version:1});
+const demoSW=()=>({title:'Interactive LED Switch',components:[add('V','V1',168,180,{value:9}),add('SW','S1',312,180,{closed:true}),add('R','R1',456,180,{value:470}),add('LED','D1',600,180),add('GND','G1',240,384)],wires:[seg(216,180,264,180),seg(360,180,408,180),seg(504,180,552,180),seg(648,180,720,180),seg(720,180,720,360),seg(720,360,120,360),seg(120,360,120,180)],version:1});
+const empty=()=>({title:'Untitled Circuit',components:[],wires:[],version:1});
+function onSegment(p,s){const {a,b}=s;return (a.x===b.x && p.x===a.x && p.y>=Math.min(a.y,b.y) && p.y<=Math.max(a.y,b.y))||(a.y===b.y && p.y===a.y && p.x>=Math.min(a.x,b.x) && p.x<=Math.max(a.x,b.x));}
+function connectivity(circuit){
+ const all=new Map(),parent=new Map();
+ const put=(p)=>{const k=key(p);if(!parent.has(k))parent.set(k,k);all.set(k,{x:snap(p.x),y:snap(p.y)});return k};
+ const find=(k)=>{let r=k;while(parent.get(r)!==r)r=parent.get(r);while(parent.get(k)!==k){const q=parent.get(k);parent.set(k,r);k=q}return r};
+ const union=(a,b)=>{const ra=find(a),rb=find(b);if(ra!==rb)parent.set(rb,ra)};
+ circuit.components.forEach(e=>tpos(e).forEach(put));
+ circuit.wires.forEach(w=>{put(w.a);put(w.b)});
+ // Explicit junction at a component terminal or wire endpoint; unmarked crossings do not connect.
+ for(const w of circuit.wires){const origin=put(w.a);for(const [k,p] of all)if(onSegment(p,w))union(origin,k)}
+ const ground=circuit.components.filter(e=>e.type==='GND').map(e=>key(tpos(e)[0]));
+ ground.slice(1).forEach(k=>union(ground[0],k));
+ const term={};circuit.components.forEach(e=>{term[e.id]=tpos(e).map(p=>find(key(p)))});
+ return {term,at:p=>find(key(p)),ground:ground.length?find(ground[0]):null};
+}
+function linearSolve(A,b){
+ const n=b.length;const M=A.map((row,i)=>[...row,b[i]]);
+ for(let k=0;k<n;k++){
+  let pivot=k;for(let i=k+1;i<n;i++)if(Math.abs(M[i][k])>Math.abs(M[pivot][k]))pivot=i;
+  if(Math.abs(M[pivot][k])<1e-18)throw Error('Singular circuit matrix');
+  if(pivot!==k)[M[k],M[pivot]]=[M[pivot],M[k]];
+  const div=M[k][k];for(let j=k;j<=n;j++)M[k][j]/=div;
+  for(let i=0;i<n;i++)if(i!==k){const mul=M[i][k];if(mul!==0)for(let j=k;j<=n;j++)M[i][j]-=mul*M[k][j];}
+ }
+ return M.map(row=>row[n]);
+}
+function solve(circuit,state={},dt=.01,time=0){
+ const {term,at,ground}=connectivity(circuit);
+ if(!ground)return {ok:false,error:'Add a GND symbol to set the 0 V reference',volts:{},currents:{},term,at};
+ const roots=[...new Set(Object.values(term).flat())].filter(r=>r!==ground);const idx=new Map(roots.map((r,i)=>[r,i]));
+ const sources=circuit.components.filter(e=>['V','AC'].includes(e.type));const n=roots.length+sources.length;
+ if(n>120)return {ok:false,error:'Circuit too large for the alpha solver',volts:{},currents:{},term,at};
+ const node=(r)=>r===ground?-1:idx.get(r);
+ const oldCap=state.cap||{};const leds=circuit.components.filter(e=>e.type==='LED');
+ let guess={...(state.volts||{})},solution=[],iterations=0;
+ const voltage=e=>e.type==='AC'?e.value*Math.sin(2*Math.PI*Math.max(.001,e.freq)*time):e.value;
+ try{
+ for(let it=0;it<16;it++){
+  iterations=it+1;
+  const A=Array.from({length:n},()=>Array(n).fill(0)),b=Array(n).fill(0);
+  const stampG=(r1,r2,g)=>{const i=node(r1),j=node(r2);if(i>=0)A[i][i]+=g;if(j>=0)A[j][j]+=g;if(i>=0&&j>=0){A[i][j]-=g;A[j][i]-=g}};
+  // RHS for a current source flowing from r1 to r2.
+  const stampI=(r1,r2,current)=>{const i=node(r1),j=node(r2);if(i>=0)b[i]-=current;if(j>=0)b[j]+=current};
+  // Tiny reference conductance avoids undefined values on floating sub-circuits;
+  // results for floating nodes are not to be treated as validated electrical values.
+  for(let i=0;i<roots.length;i++)A[i][i]+=1e-11;
+  for(const e of circuit.components){
+   if(e.type==='GND')continue;
+   const [a,z]=term[e.id];
+   if(e.type==='R')stampG(a,z,1/Math.max(.001,e.value));
+   else if(e.type==='SW')stampG(a,z,e.closed?1/0.05:1/1e10);
+   else if(e.type==='C'){const g=Math.max(1e-15,e.value)/dt;stampG(a,z,g);stampI(a,z,-g*(oldCap[e.id]||0))}
+   else if(e.type==='LED'){
+    const v=(guess[a]||0)-(guess[z]||0),vf=Math.max(.1,e.value),on=v>=vf-0.00001;
+    const g=on?1/12:1e-8;stampG(a,z,g);if(on)stampI(a,z,-g*vf);
+   }
+  }
+  sources.forEach((e,j)=>{
+   const [a,z]=term[e.id],c=roots.length+j,ia=node(a),iz=node(z);
+   if(ia>=0){A[ia][c]+=1;A[c][ia]+=1}if(iz>=0){A[iz][c]-=1;A[c][iz]-=1}b[c]=-voltage(e);
+  });
+  solution=linearSolve(A,b);
+  const next={[ground]:0};roots.forEach((r,i)=>next[r]=solution[i]);
+  let delta=0;for(const r of roots)delta=Math.max(delta,Math.abs((guess[r]||0)-next[r]));
+  guess=next;if(delta<1e-7)break;
+ }
+ const currents={},newCap={...oldCap};
+ for(const e of circuit.components){if(e.type==='GND')continue;
+  const [a,z]=term[e.id],v=(guess[a]||0)-(guess[z]||0);
+  if(e.type==='R')currents[e.id]=v/Math.max(.001,e.value);
+  else if(e.type==='SW')currents[e.id]=v/(e.closed?.05:1e10);
+  else if(e.type==='C'){currents[e.id]=Math.max(1e-15,e.value)/dt*(v-(oldCap[e.id]||0));newCap[e.id]=v}
+  else if(e.type==='LED')currents[e.id]=v>e.value?(v-e.value)/12:v*1e-8;
+  else if(e.type==='V'||e.type==='AC')currents[e.id]=solution[roots.length+sources.findIndex(s=>s.id===e.id)];
+ }
+ return {ok:true,volts:guess,currents,cap:newCap,term,at,ground,iterations,sourceVoltage:voltage,error:null};
+ }catch(e){return {ok:false,error:e.message,volts:{},currents:{},term,at}};
+}
+root.BlazeSim={GRID,snap,tpos,defaults,add,seg,empty,demoLED,demoRC,demoSW,connectivity,solve};
+})(typeof window!=='undefined'?window:globalThis);
+
+</script><script>
+(function(){'use strict';
+const S=window.BlazeSim, $=id=>document.getElementById(id), svg=$('schematic'),scope=$('scopeCanvas');
+let project=S.demoLED(),selected='D1',tool='select',running=true,view={x:0,y:0,w:960,h:540},hintStart=null,hoverPoint=null,drag=null,history=[],undoStack=[],time=0,previousTimestamp=0,lastFrame=0,lastScope=0,result=null,seq=10;
+const TYPE_NAME={V:'DC Voltage Source',AC:'Sine Wave Source',R:'Resistor',C:'Capacitor',LED:'Light Emitting Diode',SW:'SPST Switch',GND:'Ground'};
+const TYPE_ICON={V:'⊕',AC:'∿',R:'〽',C:'∥',LED:'↗',SW:'⟍',GND:'⏚'};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const number=(n,d=2)=>Number.isFinite(n)?n.toFixed(d):'—';
+const currentFmt=n=>!Number.isFinite(n)?'—':Math.abs(n)<.000001?number(n*1e9,2)+' nA':Math.abs(n)<.001?number(n*1e6,2)+' µA':Math.abs(n)<1?number(n*1000,2)+' mA':number(n,3)+' A';
+const voltFmt=n=>Number.isFinite(n)?number(n,2)+' V':'—';
+const eq=(a,b)=>Math.abs(a-b)<.1;
+function snapshot(){undoStack.push(JSON.stringify(project));if(undoStack.length>60)undoStack.shift()}
+function resetState(){time=0;history=[];result=null;solveOne(0,false)}
+function toast(s){const el=$('toast');el.textContent=s;el.style.display='block';clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.display='none',2400)}
+function store(){try{localStorage.setItem('blaze-circuitlab-project',JSON.stringify(project))}catch(e){$('warning').textContent='Autosave unavailable; export a backup.'}}
+function changed(reset=true){if(reset)resetState();else solveOne(.02,false);store();renderInspector();render();}
+function setTool(t){tool=t;hintStart=null;hoverPoint=null;document.querySelectorAll('.tool').forEach(el=>el.classList.toggle('selected',el.dataset.tool===t));$('canvasHint').textContent=t==='wire'?'Wire: tap a terminal or grid point, then tap the destination':t==='pan'?'Drag the canvas to move the view':t==='select'?'Tap a component to inspect it; drag to move':`Tap the canvas to place ${TYPE_NAME[t]}`;render();}
+function selectedComp(){return project.components.find(e=>e.id===selected)}
+function validProject(p){return p&&typeof p.title==='string'&&Array.isArray(p.components)&&Array.isArray(p.wires)&&p.components.length<=200&&p.wires.length<=700&&p.components.every(e=>e&&TYPE_NAME[e.type]&&typeof e.id==='string'&&Number.isFinite(e.x)&&Number.isFinite(e.y)&&Math.abs(e.x)<100000&&Math.abs(e.y)<100000&&typeof e.value==='number'&&Number.isFinite(e.value))&&p.wires.every(w=>w&&w.a&&w.b&&[w.a.x,w.a.y,w.b.x,w.b.y].every(v=>Number.isFinite(v)&&Math.abs(v)<100000))}
+function safeProject(raw){if(!validProject(raw))throw Error('Invalid or unsupported circuit JSON');return {version:1,title:raw.title.slice(0,80),components:raw.components.map(e=>({...e,x:S.snap(e.x),y:S.snap(e.y),value:Math.max(0,Math.min(1e9,e.value)),freq:Math.max(.001,Math.min(10000,Number(e.freq)||1)),closed:Boolean(e.closed)})),wires:raw.wires.map(w=>({a:{x:S.snap(w.a.x),y:S.snap(w.a.y)},b:{x:S.snap(w.b.x),y:S.snap(w.b.y)}}))}}
+function setProject(p){snapshot();project=safeProject(p);selected=project.components[0]?.id||null;view={x:0,y:0,w:960,h:540};resetState();store();renderInspector();render();setTool('select')}
+function resultV(e){if(!result?.ok||!e||e.type==='GND')return 0;const [a,b]=result.term[e.id]||[];return (result.volts[a]||0)-(result.volts[b]||0)}
+function resultI(e){return result?.ok&&e?result.currents[e.id]??0:NaN}
+function solveOne(dt=.02,advance=true){if(advance)time+=dt;result=S.solve(project,result||{},dt,time);if(advance&&result.ok){let v=0;const e=selectedComp();if(e){v=resultV(e)}else{const src=project.components.find(e=>e.type==='V'||e.type==='AC');if(src)v=resultV(src)}history.push({time,value:v});if(history.length>250)history.shift()}}
+function svgPoint(e){const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const t=svg.getScreenCTM();if(!t)return {x:0,y:0};const loc=p.matrixTransform(t.inverse());return {x:S.snap(loc.x),y:S.snap(loc.y)}}
+const path=(points)=>points.map((p,i)=>`${i?'L':'M'}${p.x} ${p.y}`).join(' ');
+function symbol(e){let c='';switch(e.type){
+case 'V':c='<circle r="24" class="body-symbol"/><path d="M 2 -9 H 16 M 9 -16 V -2 M -16 11 H -2"/>';break;
+case 'AC':c='<circle r="24" class="body-symbol"/><path d="M-16 1 Q-8 -15 0 1 T16 1"/>';break;
+case 'R':c='<path d="M-36 0 L-27 0 L-20 -12 L-12 12 L-4 -12 L4 12 L12 -12 L20 12 L27 0 L36 0"/>';break;
+case 'C':c='<path d="M-48 0 H-8 M-8 -20 V20 M8 -20 V20 M8 0 H48"/>';break;
+case 'LED':{
+ const current=resultI(e),glow=Number.isFinite(current)&&current>.002;if(glow)c=`<circle cx="0" cy="0" r="37" fill="${current>.04?'#f46c63':'#6be6ac'}" opacity=".12" stroke="none"/>`;
+ c+='<path d="M-48 0 H-15 M13 0 H48"/><path d="M-15 -17 L13 0 L-15 17 Z" fill="'+(glow?'#51e6a8':'#172637')+'"/><path d="M13 -18 V18 M0 -19 L11 -31 M-3 -27 L7 -39"/><path d="M5 -30 L11 -31 L10 -25 M1 -38 L7 -39 L7 -32"/>';break;}
+case 'SW':c=`<path d="M-48 0 H-23 M23 0 H48"/><circle cx="-23" cy="0" r="4" fill="#bcd0dd"/><circle cx="23" cy="0" r="4" fill="#bcd0dd"/><path d="M-23 0 L${e.closed?'23 0':'17 -20'}" stroke="${e.closed?'#75eccf':'#f2b771'}" stroke-width="3"/>`;break;
+case 'GND':c='<path d="M0 -24 V-9 M-19 -9 H19 M-14 -2 H14 M-7 5 H7"/>';break;
+ }
+const terminals=S.tpos(e).map((p,i)=>`<circle data-terminal="${esc(e.id)}:${i}" cx="${p.x-e.x}" cy="${p.y-e.y}" r="7" fill="transparent" stroke="none"/><circle cx="${p.x-e.x}" cy="${p.y-e.y}" r="3.4" fill="#7bcabc" stroke="#071c27" stroke-width="1" pointer-events="none"/>`).join('');
+const v=resultV(e),i=resultI(e);let sub=e.type==='GND'?'0 V':e.type==='SW'?(e.closed?'CLOSED':'OPEN'):e.type==='LED'?voltFmt(v):e.type==='R'?`${e.value.toLocaleString()} Ω`:e.type==='C'?`${number(e.value*1e6,1)} µF`:e.type==='AC'?`${number(e.value,1)} V · ${number(e.freq,1)} Hz`:`${number(e.value,1)} V`;
+const active=selected===e.id;const data=esc(e.id);
+const measured=(result?.ok&&e.type!=='GND')?`<text x="0" y="-43" text-anchor="middle" fill="#5de9c9" stroke="none" font-size="12">${esc(currentFmt(i))}</text>`:'';
+return `<g data-component="${data}" transform="translate(${e.x} ${e.y})" class="${active?'dragged':''}"><rect x="-56" y="-35" width="112" height="70" rx="9" fill="${active?'#143442':'transparent'}" stroke="${active?'#37d6bd':'transparent'}" stroke-dasharray="5 3" stroke-width="1.3"/><g fill="none" stroke="${active?'#98ffe6':'#aac8d8'}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" pointer-events="none">${c}</g>${terminals}<text y="61" x="0" text-anchor="middle" font-size="13" fill="#d6eaf5" pointer-events="none" font-weight="650">${esc(e.id)}</text><text y="77" x="0" text-anchor="middle" font-size="11" fill="#829fb0" pointer-events="none">${esc(sub)}</text>${measured}<rect x="-50" y="-29" width="100" height="60" fill="transparent" pointer-events="none"/></g>`;
+}
+function voltageColor(v){if(!Number.isFinite(v))return '#8294a6';if(v>.08)return `rgb(${Math.round(Math.min(248,101+Math.min(v,10)*13))},${Math.round(Math.max(145,220-Math.min(v,10)*8))},${Math.round(Math.max(78,170-Math.min(v,10)*9))})`;if(v<-.08)return '#81a8ff';return '#7bb7ad'}
+function render(){
+ const defs=`<defs><pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0 H0 V24" fill="none" stroke="#263442" stroke-width=".65"/><circle cx="0" cy="0" r="1" fill="#293949"/></pattern><filter id="glow"><feGaussianBlur stdDeviation="4"/></filter></defs>`;
+ let lines='<rect x="-2000" y="-2000" width="5000" height="5000" fill="url(#grid)"/>';
+ for(const w of project.wires){let v=NaN;try{const a=result?.at?.(w.a);if(a!==undefined&&result?.ok)v=result.volts[a]||0}catch(_){}const color=voltageColor(v);lines+=`<line data-wire="1" x1="${w.a.x}" y1="${w.a.y}" x2="${w.b.x}" y2="${w.b.y}" stroke="${color}" stroke-width="3.3" stroke-linecap="round"/><circle cx="${w.a.x}" cy="${w.a.y}" r="3" fill="${color}"/><circle cx="${w.b.x}" cy="${w.b.y}" r="3" fill="${color}"/>`}
+ if(hintStart){if(hoverPoint)lines+=`<path d="${path([hintStart,{x:hoverPoint.x,y:hintStart.y},hoverPoint])}" fill="none" stroke="#59e9c8" stroke-width="2" stroke-dasharray="7 6" opacity=".7"/>`;lines+=`<circle cx="${hintStart.x}" cy="${hintStart.y}" r="8" fill="none" stroke="#6eead3" stroke-width="2"/>`}
+ lines+=project.components.map(symbol).join('');
+ // Charge markers follow current direction across two-terminal components.
+ if(running&&result?.ok){for(const e of project.components){if(e.type==='GND')continue;const i=resultI(e);if(Math.abs(i)<1e-6)continue;const velocity=Math.min(2.5,Math.max(.15,Math.sqrt(Math.abs(i)*1000)/7));const phase=((time*velocity)%1+1)%1;const offset=(i>=0?phase:1-phase)*76-38;lines+=`<circle cx="${e.x+offset}" cy="${e.y-23}" r="3" fill="#6cebd1" opacity=".85" pointer-events="none"/>`}}
+ svg.innerHTML=defs+lines;svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);
+ $('circuitTitle').textContent=project.title;$('partsReadout').textContent=project.components.length+' devices / '+project.wires.length+' wires';$('zoomLabel').textContent=Math.round(960/view.w*100)+'%';updateReadouts();
+}
+function updateReadouts(){const e=selectedComp();$('simTime').textContent=`t = ${number(time,2)} s`;$('liveReadout').textContent=result?.ok?(e?`${esc(e.id)}  ${voltFmt(resultV(e))} · ${currentFmt(resultI(e))}`:'Select a component'): 'Solver unavailable';$('solverReadout').textContent=result?.ok?'MNA · '+result.iterations+' iter':'Check wiring';$('warning').textContent=result?.error||'';$('runBtn').textContent=running?'Ⅱ Pause':'▶ Run';$('simLabel').textContent=running?'SIMULATING':'PAUSED';$('statusDot').classList.toggle('paused',!running);if($('measureV'))$('measureV').textContent=voltFmt(resultV(e));if($('measureI'))$('measureI').textContent=currentFmt(resultI(e));if($('measureP'))$('measureP').textContent=number(resultV(e)*resultI(e)*1000,2)+' mW';}
+function renderInspector(){const e=selectedComp(),body=$('inspectBody');if(!e){body.innerHTML='<div class="empty-inspector"><h3>Nothing selected</h3>Tap a component to see simulated measurements and change its properties. You can also place new components from the left toolbar.</div>';return}
+let controls='';if(['V','AC','R','C','LED'].includes(e.type)){
+ const specs={V:[0,24,.25,'V'],AC:[.1,24,.25,'V'],R:[10,10000,10,'Ω'],C:[.000001,.01,.000001,'F'],LED:[1,3.5,.05,'V']};const [min,max,step,unit]=specs[e.type];controls+=`<div class="field"><label for="valueSlider"><span>${e.type==='R'?'Resistance':e.type==='C'?'Capacitance':e.type==='LED'?'Forward voltage (approx.)':'Voltage / amplitude'}</span><strong id="sliderVal">${e.type==='C'?number(e.value*1e6,1)+' µF':number(e.value,2)+' '+unit}</strong></label><input type="range" id="valueSlider" min="${min}" max="${max}" step="${step}" value="${e.value}"/></div>`;
+ if(e.type==='AC')controls+=`<div class="field"><label for="freqSlider">Frequency <strong id="freqVal">${number(e.freq,1)} Hz</strong></label><input type="range" id="freqSlider" min=".1" max="10" step=".1" value="${e.freq}"/></div>`;
+ }if(e.type==='SW')controls+=`<div class="option-row"><button id="toggleSwitchBtn">${e.closed?'OPEN SWITCH':'CLOSE SWITCH'}</button></div>`;
+body.innerHTML=`<div class="selected-head"><div class="selected-graphic">${TYPE_ICON[e.type]}</div><div><strong>${esc(e.id)}</strong><span>${esc(TYPE_NAME[e.type])}</span></div></div><div class="info-row"><span>Voltage (left − right)</span><strong class="quickval" id="measureV">—</strong></div><div class="info-row"><span>Current (+ left → right)</span><strong id="measureI">—</strong></div><div class="info-row"><span>Absorbed power</span><strong id="measureP">—</strong></div>${controls}<div class="option-row"><button id="cloneBtn">Duplicate</button><button class="danger" id="deleteBtn">Delete</button></div><p class="smallnote">Measurements use an educational model. Capacitors use backward Euler; LEDs use an approximate piecewise-linear curve.</p>`;updateReadouts();}
+function svgHitTerminal(e,p){const a=e.target.closest('[data-terminal]');if(a){const [id,index]=a.getAttribute('data-terminal').split(':');const comp=project.components.find(c=>c.id===id);return comp?S.tpos(comp)[Number(index)]:p}return p}
+function wireFromTo(a,b){if(a.x===b.x&&a.y===b.y)return false;const intermediate={x:b.x,y:a.y};if(a.x!==b.x&&a.y!==b.y){project.wires.push({a:{...a},b:intermediate},{a:intermediate,b:{...b}})}else project.wires.push({a:{...a},b:{...b}});return true}
+function pointerDown(ev){if(ev.button&&ev.button!==0)return;const p=svgPoint(ev),compNode=ev.target.closest?.('[data-component]');if(tool==='pan'){drag={mode:'pan',p:{x:ev.clientX,y:ev.clientY},view:{...view}};svg.setPointerCapture(ev.pointerId);return}if(tool==='wire'){const pt=svgHitTerminal(ev,p);if(!hintStart){hintStart=pt;hoverPoint=pt;render()}else{snapshot();if(wireFromTo(hintStart,pt))changed();hintStart=null;hoverPoint=null;render()}return}if(TYPE_NAME[tool]&&tool!=='select'&&tool!=='pan'){snapshot();const id=tool==='R'?'R':tool==='C'?'C':tool==='LED'?'D':tool==='SW'?'S':tool==='GND'?'G':tool==='AC'?'AC':'V';const next=id+(++seq);project.components.push(S.add(tool,next,p.x,p.y));selected=next;changed();setTool('select');return}if(tool==='select'&&compNode){const comp=project.components.find(c=>c.id===compNode.getAttribute('data-component'));if(!comp)return;selected=comp.id;snapshot();const terminals=S.tpos(comp);const links=[];project.wires.forEach((w,i)=>{for(const side of ['a','b'])if(terminals.some(t=>eq(t.x,w[side].x)&&eq(t.y,w[side].y)))links.push({i,side,p:{...w[side]}})});drag={mode:'component',id:comp.id,start:p,x:comp.x,y:comp.y,links,changed:false};svg.setPointerCapture(ev.pointerId);renderInspector();render();return}selected=null;renderInspector();render()}
+function pointerMove(ev){if(!drag){if(tool==='wire'&&hintStart){hoverPoint=svgPoint(ev);render()}return}if(drag.mode==='pan'){const factor=view.w/svg.clientWidth;view.x=drag.view.x-(ev.clientX-drag.p.x)*factor;view.y=drag.view.y-(ev.clientY-drag.p.y)*factor;render();return}if(drag.mode==='component'){const p=svgPoint(ev),comp=selectedComp();if(comp){comp.x=S.snap(drag.x+p.x-drag.start.x);comp.y=S.snap(drag.y+p.y-drag.start.y);const dx=comp.x-drag.x,dy=comp.y-drag.y;for(const l of drag.links)project.wires[l.i][l.side]={x:l.p.x+dx,y:l.p.y+dy};drag.changed=dx!==0||dy!==0;render()}}}
+function pointerUp(){if(!drag)return;if(drag.mode==='component'&&!drag.changed)undoStack.pop();if(drag.mode==='component'&&drag.changed)changed();drag=null}
+function removeSelection(){if(!selected)return;snapshot();project.components=project.components.filter(e=>e.id!==selected);selected=null;changed()}
+function duplicate(){const e=selectedComp();if(!e)return;snapshot();const id=e.type+(++seq);project.components.push({...e,id,x:e.x+0,y:e.y+108});selected=id;changed()}
+function toggleSW(){const e=selectedComp();if(!e||e.type!=='SW')return;snapshot();e.closed=!e.closed;changed(false);toast(e.closed?'Switch closed':'Switch opened')}
+function zoom(f){const w=Math.min(2000,Math.max(280,view.w*f)),h=w*(540/960);view.x+=(view.w-w)/2;view.y+=(view.h-h)/2;view.w=w;view.h=h;render()}
+function undo(){if(!undoStack.length)return;const prev=JSON.parse(undoStack.pop());project=prev;selected=project.components[0]?.id||null;changed();toast('Undid last edit')}
+function importFile(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{setProject(JSON.parse(String(reader.result)));toast('Project loaded')}catch(e){toast('Import failed: '+e.message)}};reader.onerror=()=>toast('Could not read file');reader.readAsText(file)}
+function exportFile(){const data=JSON.stringify(project,null,2),name=(project.title.toLowerCase().replace(/[^a-z0-9]+/g,'-')||'circuit')+'.json';if(window.BlazeAndroid&&typeof window.BlazeAndroid.saveJson==='function'){window.BlazeAndroid.saveJson(name,data);toast('Choose where to save the project');return}const link=document.createElement('a');link.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));link.download=name;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),10000);toast('Project exported')}
+function drawScope(){const canvas=scope,ctx=canvas.getContext('2d');if(!ctx)return;const width=canvas.clientWidth||600,height=130,dpr=Math.min(2,window.devicePixelRatio||1);if(canvas.width!==Math.round(width*dpr)||canvas.height!==Math.round(height*dpr)){canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr)}ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,width,height);ctx.strokeStyle='#294052';ctx.lineWidth=.7;for(let j=0;j<=5;j++){const y=10+j*(height-24)/5;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke()}for(let j=0;j<=12;j++){const x=j*width/12;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,height-13);ctx.stroke()}
+const vals=history.map(h=>h.value);let scale=Math.max(1,...vals.map(x=>Math.abs(x)));scale=Math.ceil(scale*1.12);const mid=(height-15)/2,range=(height-28)/2;ctx.strokeStyle='#3f6f73';ctx.beginPath();ctx.moveTo(0,mid);ctx.lineTo(width,mid);ctx.stroke();ctx.fillStyle='#7195a9';ctx.font='10px system-ui';ctx.fillText('+'+scale+'V',4,12);ctx.fillText('0 V',4,mid-4);ctx.fillText('-'+scale+'V',4,height-15);if(vals.length>1){ctx.lineWidth=2;ctx.strokeStyle='#60ebca';ctx.beginPath();vals.forEach((v,i)=>{const x=(i/(Math.max(249,vals.length-1)))*width,y=mid-v/scale*range;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)});ctx.stroke();const x=(vals.length-1)/249*width,y=mid-vals[vals.length-1]/scale*range;ctx.fillStyle='#f5b16b';ctx.beginPath();ctx.arc(x,y,3,0,2*Math.PI);ctx.fill()}
+$('scopeLabel').textContent=selected?`${selected} · voltage across terminals`:'Select a component · voltage vs time';}
+function frame(now){requestAnimationFrame(frame);const delta=previousTimestamp?Math.min(65,now-previousTimestamp):16;previousTimestamp=now;if(running){const steps=Math.max(1,Math.round(delta/17));for(let k=0;k<steps;k++)solveOne(.015,true)}if(now-lastFrame>80){render();lastFrame=now}if(now-lastScope>110){drawScope();lastScope=now}}
+// UI handlers
+$('toolList').addEventListener('click',ev=>{const btn=ev.target.closest('[data-tool]');if(btn)setTool(btn.dataset.tool)});
+svg.addEventListener('pointerdown',pointerDown);svg.addEventListener('pointermove',pointerMove);svg.addEventListener('pointerup',pointerUp);svg.addEventListener('pointercancel',pointerUp);
+svg.addEventListener('dblclick',ev=>{const id=ev.target.closest?.('[data-component]')?.getAttribute('data-component');const e=project.components.find(c=>c.id===id);if(e?.type==='SW'){selected=id;toggleSW()}});
+$('runBtn').onclick=()=>{running=!running;updateReadouts()};$('stepBtn').onclick=()=>{running=false;solveOne(.03,true);render();drawScope()};$('resetBtn').onclick=()=>{resetState();render();drawScope()};$('clearScopeBtn').onclick=()=>{history=[];drawScope()};$('zoomOutBtn').onclick=()=>zoom(1.3);$('zoomInBtn').onclick=()=>zoom(.77);$('fitBtn').onclick=()=>{view={x:0,y:0,w:960,h:540};render()};$('undoBtn').onclick=undo;
+$('inspectBody').addEventListener('input',ev=>{const e=selectedComp();if(!e)return;if(ev.target.id==='valueSlider'){e.value=Number(ev.target.value);$('sliderVal').textContent=e.type==='C'?number(e.value*1e6,1)+' µF':number(e.value,2)+' '+(e.type==='R'?'Ω':'V');solveOne(.02,false);render();store()}else if(ev.target.id==='freqSlider'){e.freq=Number(ev.target.value);$('freqVal').textContent=number(e.freq,1)+' Hz';solveOne(.02,false);render();store()}});
+$('inspectBody').addEventListener('click',ev=>{if(ev.target.id==='toggleSwitchBtn')toggleSW();if(ev.target.id==='cloneBtn')duplicate();if(ev.target.id==='deleteBtn')removeSelection()});
+$('demoLedBtn').onclick=()=>setProject(S.demoLED());$('demoRcBtn').onclick=()=>setProject(S.demoRC());$('demoSwitchBtn').onclick=()=>setProject(S.demoSW());$('newBtn').onclick=()=>setProject(S.empty());$('saveBtn').onclick=exportFile;$('importBtn').onclick=()=>$('fileInput').click();$('fileInput').onchange=e=>{importFile(e.target.files[0]);e.target.value=''};
+window.addEventListener('keydown',ev=>{const tag=(ev.target.tagName||'').toLowerCase();if(tag==='input')return;if((ev.ctrlKey||ev.metaKey)&&ev.key.toLowerCase()==='z'){ev.preventDefault();undo()}if(ev.key==='Escape'){hintStart=null;setTool('select')}if(ev.key==='Delete'||ev.key==='Backspace')removeSelection();if(ev.key.toLowerCase()==='w')setTool('wire');if(ev.key.toLowerCase()==='v')setTool('select')});
+try{const saved=localStorage.getItem('blaze-circuitlab-project');if(saved)project=safeProject(JSON.parse(saved))}catch(e){}selected=project.components.find(e=>e.type==='LED')?.id||project.components[0]?.id||null;if(window.innerWidth<=500)view={x:98,y:76,w:660,h:540};solveOne(.02,false);renderInspector();render();drawScope();requestAnimationFrame(frame);
+window.BlazeCircuitLab={getProject:()=>JSON.parse(JSON.stringify(project)),getResult:()=>result,loadProject:setProject,pause:()=>{running=false},step:()=>{solveOne(.02,true);render()}};
+})();
+
+</script></body></html>

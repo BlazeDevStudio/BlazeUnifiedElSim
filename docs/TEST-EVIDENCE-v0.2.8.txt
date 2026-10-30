@@ -1,0 +1,113 @@
+PASS original LED demo and DC current
+PASS original switch closed and opened
+PASS original RC demo transient
+PASS crossing wires without junction not connected
+PASS unmarked T intersection is rejected
+PASS end-to-end segment connection
+PASS duplicate refs validation
+PASS no GND -> diagnostic
+PASS open disconnected circuit -> floating diagnostic
+PASS KiCad serializer generated syntax
+PASS all original alpha demos now export KiCad symbols without fake footprints
+PASS KiCad deterministic output
+PASS LED branch current matches original HTML alpha
+PASS Switch branch current matches original HTML alpha
+PASS RC first timestep matches original HTML alpha
+PASS PCB data mapping uses authoritative net graph
+PASS PCB mapping rejects invented voltage-source footprint
+PASS PCB mapping rejects missing terminal mapping
+PASS PCB explicit footprint assignment builds one unrouted net
+PASS PCB footprint pin polarity is physical KiCad LED cathode 1 anode 2
+PASS PCB rejects impossible position and missing footprint
+PASS PCB layout snapshots are deep copies
+PASS PCB has no fabricated copper traces
+PASS manual F.Cu route joins same-net pads and removes one airwire
+PASS different-net pad connection is rejected without mutation
+PASS invalid copper geometry and unsupported layers are refused
+PASS routing snapshots are deep copies and retain pad identities
+PASS route becomes invalid if footprint motion would cause a diagonal segment
+PASS approximate DRC refuses copper on a different-net pad
+PASS route rejects missing pad and nonfinite geometry
+PASS route cannot silently cross an obstacle pad
+PASS different-net intersecting copper tracks are rejected
+PASS unrouted airwires are not falsely classified as copper
+PASS PCB edits do not change alpha-based solver or KiCad electrical nets
+PASS ideal independent DC current source: 10 mA in series loop
+PASS negative independent current source reverses resistor current
+PASS RL first backward-Euler step agrees with closed-form discrete time
+PASS RL exponential current rise reaches 5V/10ohm DC limit
+PASS inductor current persists across circuit steps and zero-source free decay
+PASS inductor parameter validation fails closed
+PASS current source value cannot be nonfinite or outside modeled range
+PASS native model-backed library includes inductor and current source values
+PASS KiCad export contains native inductor and current source with correct properties
+PASS PCB footprint maps inductor pin 0/1 and refuses simulator-only current source
+PASS tiny capacitor and inductor values survive KiCad export without rounding to zero
+PASS SPICE exported RL matches authoritative topology and correct DC source polarity
+PASS SPICE current source exports correct element and excludes imaginary PCB footprint
+PASS SPICE fails closed for LED model without physical device equivalent
+PASS SPICE open switch is an explicit 10 gigaohm approximation
+PASS SPICE export rejects unsafe component identifiers rather than emitting injected directives
+PASS offline electronics catalog searchable and backed by real solver types
+PASS catalog placement keeps electrical semantics and persistent catalog identity
+PASS offline catalog refuses unknown entry
+PASS bundled local KiCad footprints map two physical pads to correct terminals
+PASS new physical library assignment and ratsnest operate through shared topology
+PASS standalone schematic ZIP contains real KiCad footprint definitions
+PASS all nine bundled native KiCad symbol types are present
+PASS KiCad bundle refuses references to absent local footprint
+PASS Arduino UNO and Nano exact named pin reference capabilities
+PASS ESP32 GPIO reference contains boot and input-only restrictions
+PASS MCU pin planner binds stable component terminal rather than unstable net index
+PASS MCU planner rejects invalid GPIO and orphan part binding
+PASS ESP8266 NodeMCU virtual pin planner documents real D/GPIO mapping
+PASS MCU planner warns that 3.3 V GPIO is not automatically 5 V safe
+PASS Shockley diode forward branch current agrees with series resistor KCL
+PASS Diode forward operating point matches analytic bisection solution
+PASS Diode reverse bias remains blocking without fictional forward conduction
+PASS Shockley model monotonic current versus forward bias
+PASS Shockley derivative matches numerical finite differences
+PASS Diode fixed-Is temperature dependence is explicit and finite
+PASS Diode model parameter guards are enforced
+PASS Detaching project keeps diode model metadata independent
+PASS Offline library includes simulation-backed diode presets
+PASS Diode physical pad 1 cathode and pad 2 anode share authoritative net
+PASS Diode KiCad schema exports anode/cathode pin number and precise value
+PASS Diode SPICE writes explicit model, anode/cathode and bounded parameters
+PASS SPICE rejects per-diode inconsistent temperatures rather than lying
+PASS All old example numerical regression fixtures still work after diode addition
+PASS Three-terminal NPN pin identity uses base collector emitter in order
+PASS NPN grounded-emitter bias solution has physical branch currents and VCE
+PASS NPN transistor turns off under zero base bias
+PASS NPN terminal KCL and Jacobian agree with finite difference
+PASS NPN rejects nonphysical beta and saturation current
+PASS NPN simulation presets are not just catalog names
+PASS NPN three-pad footprint maps E B C to authoritative pin nets
+PASS NPN KiCad export assigns B C E pin numbers 2 3 1
+PASS NPN SPICE netlist exports a three-terminal Q and explicit model
+PASS NPN project clone retains independent model parameters
+PASS Earlier alpha demos remain numerically unchanged with 3-pin NPN support
+PASS NMOS G D S terminal order and 90-degree rotation
+PASS NMOS off below Vth: finite solution but no channel current
+PASS NMOS saturation current agrees with square law
+PASS NMOS triode solution matches analytic quadratic root
+PASS NMOS finite difference Jacobian matches both triode and saturation branches
+PASS NMOS reverse channel direction is symmetric without imaginary body diode
+PASS An unwired insulated NMOS gate is diagnosed as floating
+PASS NMOS physically invalid thresholds or K are rejected
+PASS NMOS four offline catalog presets actually instantiate simulated MOSFETs
+PASS NMOS pad mapping preserves schematic G D S nets
+PASS NMOS KiCad export contains correct G D S pin identities and Vth
+PASS NMOS SPICE export uses D G S B syntax and explicit level-one model
+PASS NMOS project clone keeps K and new schema version
+PASS Original LED RC and switch operating points stay unchanged with NMOS solver
+PASS VCVS authoritative four-pin circuit produces 10x gain across load
+PASS VCVS input pin does not create a fictitious conductive short
+PASS VCVS rejects floating control input rather than applying fake conductance
+PASS VCVS finite gain stays valid under gain changes
+PASS VCVS negative-feedback unity follower solves finite closed-loop gain
+PASS VCVS KiCad symbolic export uses four pin identities and no PCB footprint
+PASS VCVS SPICE export is a true E controlled source with correct terminals
+PASS VCVS library entries have real model identity and no physical package
+PASS old v8 JSON schema is unchanged by ideal dependent-source addition
+SUMMARY: 112/112 passed

@@ -1,0 +1,2 @@
+board,pin,functions,net,connected_to,warning
+"arduino-uno-r3","D13","DIGITAL|SPI_SCK","1","R1:1","No verified voltage safety analysis"
