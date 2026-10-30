@@ -25,7 +25,7 @@ object KiCadPackage {
         val entries=sortedMapOf<String,ByteArray>()
         // Same-stem project loads fp-lib-table (KIPRJMOD) for KiCad 9 CLI and GUI.
         // '{}' is native JSON with default project settings, not a waiver of DRC.
-        entries["$safe.kicad_pro"]="{}\\n".toByteArray(Charsets.UTF_8)
+        entries["$safe.kicad_pro"]="{}".toByteArray(Charsets.UTF_8)
         entries["$safe.kicad_sch"]=result.schematic.toByteArray(Charsets.UTF_8)
         if(board!=null)entries["$safe.kicad_pcb"]=board.pcb.toByteArray(Charsets.UTF_8)
         entries["README.txt"]=("Blaze CircuitLab KiCad 9 experimental schematic export.\n"+
